@@ -1,0 +1,65 @@
+openapi: "3.0.3"
+info:
+  title: "studyconnect API"
+  description: "studyconnect API"
+  version: "1.0.0"
+servers:
+- url: "https://studyconnect"
+paths:
+  /api/v1/auth-test:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+  /api/v1/oauth/discord:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+  /api/v1/oauth/discord/callback:
+    get:
+      description: ""
+      parameters:
+      - name: "code"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/OAuthResponse"
+components:
+  schemas:
+    UserResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        username:
+          type: "string"
+        email:
+          type: "string"
+    OAuthResponse:
+      type: "object"
+      properties:
+        token:
+          type: "string"
+        user:
+          $ref: "#/components/schemas/UserResponse"
