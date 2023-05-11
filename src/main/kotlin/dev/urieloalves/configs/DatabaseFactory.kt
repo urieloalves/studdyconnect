@@ -13,7 +13,7 @@ object DatabaseFactory {
         }
     }
 
-    fun create(): Database {
+    private fun create(): Database {
         val url = "jdbc:${Env.DB_DRIVER}://${Env.DB_HOST}:${Env.DB_PORT}/${Env.DB_NAME}"
         val driver = "org.postgresql.Driver"
         val user = Env.DB_USER

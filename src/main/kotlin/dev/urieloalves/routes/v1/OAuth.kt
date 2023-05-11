@@ -25,39 +25,34 @@ fun Route.oAuthRoutes() {
 
         get("/discord/callback") {
             val code = call.parameters["code"] ?: throw Error("Could not obtain code from discord")
+
             runBlocking {
                 val discordToken = DiscordClient.getAccessToken(code)
 
-                val user = DiscordClient.getUser(discordToken)
+                val userFromDiscord = DiscordClient.getUser(discordToken)
 
-                val userExists = false
-                if (userExists) {
-                    val token = JWT.create()
-                        .withClaim("id", user.id)
-                        .withExpiresAt(Instant.now().plusSeconds(Env.JWT_EXPIRES_IN_MINUTES * 60))
-                        .sign(Algorithm.HMAC256(Env.JWT_SECRET))
+                val discordUserDao = DiscordUserDaoImpl()
 
-                    call.respond(
-                        TokenResponse(
-                            token = token
-                        )
-                    )
-                } else {
-                    val discordUserDao = DiscordUserDaoImpl()
+                val createdDiscordUser = discordUserDao.getById(userFromDiscord.id)
 
-                    discordUserDao.create(id = user.id, username = user.username, email = user.email)
-
-                    val token = JWT.create()
-                        .withClaim("id", user.id)
-                        .withExpiresAt(Instant.now().plusSeconds(Env.JWT_EXPIRES_IN_MINUTES))
-                        .sign(Algorithm.HMAC256(Env.JWT_SECRET))
-
-                    call.respond(
-                        TokenResponse(
-                            token = token
-                        )
+                if (createdDiscordUser == null) {
+                    discordUserDao.create(
+                        id = userFromDiscord.id,
+                        username = userFromDiscord.username,
+                        email = userFromDiscord.email
                     )
                 }
+
+                val token = JWT.create()
+                    .withClaim("id", userFromDiscord.id)
+                    .withExpiresAt(Instant.now().plusSeconds(Env.JWT_EXPIRES_IN_MINUTES * 60))
+                    .sign(Algorithm.HMAC256(Env.JWT_SECRET))
+
+                call.respond(
+                    TokenResponse(
+                        token = token
+                    )
+                )
             }
         }
     }
