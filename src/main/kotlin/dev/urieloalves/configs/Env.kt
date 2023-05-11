@@ -16,6 +16,13 @@ object Env {
     var JWT_SECRET: String
     var JWT_EXPIRES_IN_MINUTES: Long
 
+    var DB_DRIVER: String
+    var DB_HOST: String
+    var DB_PORT: String
+    var DB_USER: String
+    var DB_PASSWORD: String
+    var DB_NAME: String
+
     init {
         val dotenv = Dotenv.configure().ignoreIfMissing().load()
 
@@ -35,5 +42,12 @@ object Env {
         JWT_SECRET = dotenv["JWT_SECRET"] ?: throw Error("JWT_SECRET must be provided")
         JWT_EXPIRES_IN_MINUTES =
             dotenv["JWT_EXPIRES_IN_MINUTES"]?.toLongOrNull() ?: throw Error("JWT_EXPIRES_IN_MINUTES must be provided")
+
+        DB_DRIVER = dotenv["DB_DRIVER"] ?: throw Error("DB_DRIVER must be provided")
+        DB_HOST = dotenv["DB_HOST"] ?: throw Error("DB_HOST must be provided")
+        DB_PORT = dotenv["DB_PORT"] ?: throw Error("DB_PORT must be provided")
+        DB_USER = dotenv["DB_USER"] ?: throw Error("DB_USER must be provided")
+        DB_PASSWORD = dotenv["DB_PASSWORD"] ?: throw Error("DB_PASSWORD must be provided")
+        DB_NAME = dotenv["DB_NAME"] ?: throw Error("DB_NAME must be provided")
     }
 }
