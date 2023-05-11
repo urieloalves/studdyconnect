@@ -2,6 +2,7 @@ package dev.urieloalves
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import dev.urieloalves.configs.DatabaseFactory
 import dev.urieloalves.configs.Env
 import dev.urieloalves.routes.v1.oAuthRoutes
 import io.ktor.http.HttpHeaders
@@ -27,6 +28,7 @@ import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 
 fun main() {
+    DatabaseFactory.init()
     embeddedServer(Netty, port = Env.PORT, module = Application::module).start(wait = true)
 }
 

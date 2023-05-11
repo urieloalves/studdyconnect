@@ -1,4 +1,4 @@
-package dev.urieloalves.models
+package dev.urieloalves.data.models
 
 data class User(
     val id: String,

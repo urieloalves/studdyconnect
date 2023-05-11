@@ -3,7 +3,7 @@ package dev.urieloalves.clients
 import dev.urieloalves.clients.responses.GetAccessTokenResponse
 import dev.urieloalves.clients.responses.GetUserInfoResponse
 import dev.urieloalves.configs.Env
-import dev.urieloalves.models.User
+import dev.urieloalves.data.models.User
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -36,7 +36,7 @@ object DiscordClient {
                 append("redirect_uri", Env.DISCORD_MY_REDIRECT_URL)
             }
         ).body<GetAccessTokenResponse>()
-        
+
         return data.accessToken
     }
 
@@ -50,7 +50,7 @@ object DiscordClient {
         return User(
             id = data.id,
             username = data.username,
-            email = data.username
+            email = data.email
         )
     }
 }

@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import dev.urieloalves.clients.DiscordClient
 import dev.urieloalves.configs.Env
+import dev.urieloalves.data.dao.DiscordUserDaoImpl
 import dev.urieloalves.routes.v1.responses.TokenResponse
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
@@ -29,7 +30,7 @@ fun Route.oAuthRoutes() {
 
                 val user = DiscordClient.getUser(discordToken)
 
-                val userExists = true
+                val userExists = false
                 if (userExists) {
                     val token = JWT.create()
                         .withClaim("id", user.id)
@@ -42,7 +43,10 @@ fun Route.oAuthRoutes() {
                         )
                     )
                 } else {
-                    // TODO create user
+                    val discordUserDao = DiscordUserDaoImpl()
+
+                    discordUserDao.create(id = user.id, username = user.username, email = user.email)
+
                     val token = JWT.create()
                         .withClaim("id", user.id)
                         .withExpiresAt(Instant.now().plusSeconds(Env.JWT_EXPIRES_IN_MINUTES))
