@@ -13,20 +13,27 @@ object Env {
     var DISCORD_REDIRECT_URL: String
     var DISCORD_GRANT_TYPE: String
 
+    var JWT_SECRET: String
+    var JWT_EXPIRES_IN_MINUTES: Long
+
     init {
         val dotenv = Dotenv.configure().ignoreIfMissing().load()
 
-        this.PORT = dotenv["PORT"]?.toIntOrNull() ?: 8080
+        PORT = dotenv["PORT"]?.toIntOrNull() ?: 8080
 
-        this.DISCORD_CLIENT_ID = dotenv["DISCORD_CLIENT_ID"] ?: throw Error("DISCORD_CLIENT_ID must be provided")
-        this.DISCORD_CLIENT_SECRET =
+        DISCORD_CLIENT_ID = dotenv["DISCORD_CLIENT_ID"] ?: throw Error("DISCORD_CLIENT_ID must be provided")
+        DISCORD_CLIENT_SECRET =
             dotenv["DISCORD_CLIENT_SECRET"] ?: throw Error("DISCORD_CLIENT_SECRET must be provided")
-        this.DISCORD_API_BASE_URL =
+        DISCORD_API_BASE_URL =
             dotenv["DISCORD_API_BASE_URL"] ?: throw Error("DISCORD_API_BASE_URL must be provided")
-        this.DISCORD_MY_REDIRECT_URL =
+        DISCORD_MY_REDIRECT_URL =
             dotenv["DISCORD_MY_REDIRECT_URL"] ?: throw Error("DISCORD_MY_REDIRECT_URL must be provided")
-        this.DISCORD_REDIRECT_URL =
+        DISCORD_REDIRECT_URL =
             dotenv["DISCORD_REDIRECT_URL"] ?: throw Error("DISCORD_REDIRECT_URL must be provided")
-        this.DISCORD_GRANT_TYPE = dotenv["DISCORD_GRANT_TYPE"] ?: throw Error("DISCORD_GRANT_TYPE must be provided")
+        DISCORD_GRANT_TYPE = dotenv["DISCORD_GRANT_TYPE"] ?: throw Error("DISCORD_GRANT_TYPE must be provided")
+
+        JWT_SECRET = dotenv["JWT_SECRET"] ?: throw Error("JWT_SECRET must be provided")
+        JWT_EXPIRES_IN_MINUTES =
+            dotenv["JWT_EXPIRES_IN_MINUTES"]?.toLongOrNull() ?: throw Error("JWT_EXPIRES_IN_MINUTES must be provided")
     }
 }
