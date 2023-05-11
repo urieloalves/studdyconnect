@@ -6,11 +6,10 @@ import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 
 object DiscordUsersTable : Table("discord_users") {
-    val id = varchar("id", 255).uniqueIndex()
-    val username = varchar("username", 255)
-    val email = varchar("email", 255).uniqueIndex()
-    override val primaryKey = PrimaryKey(id)
-
+    val id = text("id").uniqueIndex()
+    val username = text("username")
+    val email = text("email").uniqueIndex()
+    
     fun fromModel(it: UpdateBuilder<Number>, discordUser: DiscordUser) {
         it[id] = discordUser.id
         it[username] = discordUser.username

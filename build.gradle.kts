@@ -5,10 +5,13 @@ val dotenv_version: String by project
 val exposed_version: String by project
 val postgres_driver_version: String by project
 val swagger_codegen_version: String by project
+val flyway_version: String by project
+
 plugins {
     kotlin("jvm") version "1.8.21"
     id("io.ktor.plugin") version "2.3.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.21"
+    id("org.flywaydb.flyway") version "9.17.0"
 }
 
 group = "dev.urieloalves"
@@ -45,6 +48,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.github.cdimascio:dotenv-java:$dotenv_version")
     implementation("org.postgresql:postgresql:$postgres_driver_version")
+    implementation("org.flywaydb:flyway-core:$flyway_version")
 
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
