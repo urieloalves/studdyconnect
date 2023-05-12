@@ -46,4 +46,24 @@ class DiscordService {
             allowed = Permissions(Permission.All)
         }
     }
+
+    suspend fun joinChannel(channelId: String, userId: String) {
+        val kord = Kord(Env.DISCORD_BOT_TOKEN)
+        kord.rest.channel.editMemberPermissions(
+            channelId = Snowflake(channelId),
+            memberId = Snowflake(userId)
+        ) {
+            allowed = Permissions(Permission.All)
+        }
+    }
+
+    suspend fun leaveChannel(channelId: String, userId: String) {
+        val kord = Kord(Env.DISCORD_BOT_TOKEN)
+        kord.rest.channel.editMemberPermissions(
+            channelId = Snowflake(channelId),
+            memberId = Snowflake(userId)
+        ) {
+            denied = Permissions(Permission.All)
+        }
+    }
 }

@@ -29,7 +29,7 @@ class GroupDaoImpl : GroupDao {
         description: String,
         courseLink: String,
         createdById: String,
-        discordChannelId: Long
+        channelId: Long
     ) {
         val id = UUID.randomUUID().toString()
         transaction {
@@ -38,15 +38,15 @@ class GroupDaoImpl : GroupDao {
                 it[GroupTable.name] = name
                 it[GroupTable.description] = description
                 it[GroupTable.courseLink] = courseLink
-                it[GroupTable.createdById] = createdById
-                it[GroupTable.discordChannelId] = discordChannelId
+                it[GroupTable.createdBy] = createdById
+                it[GroupTable.channelId] = channelId
             }
         }
     }
 
     override fun getAllCreatedBy(id: String): List<Group> {
         return transaction {
-            GroupTable.select { GroupTable.createdById.eq(id) }
+            GroupTable.select { GroupTable.createdBy.eq(id) }
                 .map {
                     GroupTable.toModel(it)
                 }

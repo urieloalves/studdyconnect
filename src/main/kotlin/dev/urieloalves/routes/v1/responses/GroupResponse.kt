@@ -10,6 +10,6 @@ data class GroupResponse(
     val description: String,
     @SerialName("course_link")
     val courseLink: String,
-    @SerialName("created_by_id")
-    val createdById: String,
+    @SerialName("created_by")
+    val createdBy: String,
 )

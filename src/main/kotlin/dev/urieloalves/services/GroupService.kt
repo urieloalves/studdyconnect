@@ -1,6 +1,5 @@
 package dev.urieloalves.services
 
-import dev.urieloalves.data.dao.ChannelDao
 import dev.urieloalves.data.dao.GroupDao
 import dev.urieloalves.data.dao.GroupUserDaoImpl
 import dev.urieloalves.data.models.Group
@@ -8,7 +7,6 @@ import dev.urieloalves.routes.v1.requests.CreateGroupRequest
 
 class GroupService(
     val groupDao: GroupDao,
-    val channelDao: ChannelDao,
     val groupUserDao: GroupUserDaoImpl,
     val discordService: DiscordService
 ) {
@@ -40,9 +38,10 @@ class GroupService(
     fun joinGroup(groupId: String, userId: String) {
         val group = groupDao.getById(groupId)
         group?.let {
-            if (it.createdById != userId) {
+            if (it.createdBy != userId) {
                 val hasJoined = groupUserDao.hasUserJoinedGroup(userId = userId, groupId = groupId)
                 if (!hasJoined) {
+
                     groupUserDao.joinGroup(userId = userId, groupId = groupId)
                 }
             }
@@ -52,7 +51,7 @@ class GroupService(
     fun leave(groupId: String, userId: String) {
         val group = groupDao.getById(groupId)
         group?.let {
-            if (it.createdById != userId) {
+            if (it.createdBy != userId) {
                 val hasJoined = groupUserDao.hasUserJoinedGroup(userId = userId, groupId = groupId)
                 if (hasJoined) {
                     groupUserDao.leaveGroup(userId = userId, groupId = groupId)

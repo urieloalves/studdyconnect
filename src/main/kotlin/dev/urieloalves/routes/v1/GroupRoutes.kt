@@ -1,6 +1,5 @@
 package dev.urieloalves.routes.v1
 
-import dev.urieloalves.data.dao.ChannelDaoImpl
 import dev.urieloalves.data.dao.GroupDaoImpl
 import dev.urieloalves.data.dao.GroupUserDaoImpl
 import dev.urieloalves.routes.v1.requests.CreateGroupRequest
@@ -22,7 +21,6 @@ fun Route.groupRoutes() {
 
     val groupService = GroupService(
         groupDao = GroupDaoImpl(),
-        channelDao = ChannelDaoImpl(),
         groupUserDao = GroupUserDaoImpl(),
         discordService = DiscordService()
     )
@@ -48,7 +46,7 @@ fun Route.groupRoutes() {
                         name = it.name,
                         description = it.description,
                         courseLink = it.courseLink,
-                        createdById = it.createdById
+                        createdBy = it.createdBy
                     )
                 }
             )

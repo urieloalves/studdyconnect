@@ -5,6 +5,6 @@ data class Group(
     val name: String,
     val description: String,
     val courseLink: String,
-    val createdById: String,
-    val discordChannelId: Long
+    val createdBy: String,
+    val channelId: Long
 )

@@ -10,16 +10,16 @@ object GroupTable : Table("groups") {
     val name = text("name")
     val description = text("description")
     val courseLink = text("course_link")
-    val createdById = text("created_by_id")
-    val discordChannelId = long("discord_channel_id")
+    val createdBy = text("created_by")
+    val channelId = long("channelId")
 
     fun fromModel(it: UpdateBuilder<Number>, group: Group) {
         it[id] = group.id
         it[name] = group.name
         it[description] = group.description
         it[courseLink] = group.courseLink
-        it[createdById] = group.createdById
-        it[discordChannelId] = group.discordChannelId
+        it[createdBy] = group.createdBy
+        it[channelId] = group.channelId
     }
 
     fun toModel(row: ResultRow): Group {
@@ -28,8 +28,8 @@ object GroupTable : Table("groups") {
             name = row[name],
             description = row[description],
             courseLink = row[courseLink],
-            createdById = row[createdById],
-            discordChannelId = row[discordChannelId],
+            createdBy = row[createdBy],
+            channelId = row[channelId],
         )
     }
 }

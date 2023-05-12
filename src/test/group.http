@@ -1,11 +1,11 @@
 POST http://localhost:3333/api/v1/groups
 Content-Type: application/json
-Authorization: Bearer <token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwNjYyODM0MzQ2ODg5MjU4MjciLCJleHAiOjE2ODM5MjYxNDJ9.Zpbu4zdgWBoDOvZI1lNLu_ixXrm41AkmlVj-aW5zYzY
 
 {
-  "name": "Kotlin Masterclass",
-  "description": "Master Kotlin",
-  "course_link": "http://kotlin.com"
+  "name": "Java Masterclass",
+  "description": "Master Java",
+  "course_link": "http://java.com"
 }
 
 ###
