@@ -6,19 +6,44 @@ info:
 servers:
 - url: "https://studyconnect"
 paths:
-  /api/v1/auth-test:
+  /api/v1/groups:
     get:
       description: ""
       responses:
         "200":
           description: "OK"
           content:
-            text/plain:
+            '*/*':
               schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/GroupResponse"
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/CreateGroupRequest"
+        required: true
+  /api/v1/groups/{id}/join:
+    post:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+  /api/v1/groups/{id}/leave:
+    post:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
   /api/v1/oauth/discord:
     get:
       description: ""
@@ -47,6 +72,28 @@ paths:
                 $ref: "#/components/schemas/OAuthResponse"
 components:
   schemas:
+    GroupResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        courseLink:
+          type: "string"
+        createdBy:
+          type: "string"
+    CreateGroupRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        description:
+          type: "string"
+        courseLink:
+          type: "string"
     UserResponse:
       type: "object"
       properties:
