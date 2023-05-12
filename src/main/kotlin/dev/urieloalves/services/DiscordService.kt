@@ -13,6 +13,7 @@ class DiscordService {
 
     suspend fun joinServer(discordId: String, token: String) {
         val kord = Kord(Env.DISCORD_BOT_TOKEN)
+        
         kord.rest.guild.addGuildMember(
             guildId = Snowflake(Env.DISCORD_GUILD_ID),
             userId = Snowflake(discordId),
@@ -21,12 +22,10 @@ class DiscordService {
     }
 
     suspend fun createChannel(name: String, description: String, discordId: String): String {
-        val guildId = Snowflake(Env.DISCORD_GUILD_ID)
         val kord = Kord(Env.DISCORD_BOT_TOKEN)
-        val roleIdEveryone = 1106606150306242682
 
         val channel = kord.rest.guild.createTextChannel(
-            guildId = guildId,
+            guildId = Snowflake(Env.DISCORD_GUILD_ID),
             name = name
         ) {
             topic = description
@@ -34,7 +33,7 @@ class DiscordService {
 
         kord.rest.channel.editRolePermission(
             channelId = channel.id,
-            roleId = Snowflake(roleIdEveryone)
+            roleId = Snowflake(Env.DISCORD_ROLE_EVERYONE_ID)
         ) {
             denied = Permissions(Permission.All)
         }
@@ -51,6 +50,7 @@ class DiscordService {
 
     suspend fun joinChannel(channelId: String, discordId: String) {
         val kord = Kord(Env.DISCORD_BOT_TOKEN)
+
         kord.rest.channel.editMemberPermissions(
             channelId = Snowflake(channelId),
             memberId = Snowflake(discordId)
@@ -61,6 +61,7 @@ class DiscordService {
 
     suspend fun leaveChannel(channelId: String, discordId: String) {
         val kord = Kord(Env.DISCORD_BOT_TOKEN)
+
         kord.rest.channel.editMemberPermissions(
             channelId = Snowflake(channelId),
             memberId = Snowflake(discordId)

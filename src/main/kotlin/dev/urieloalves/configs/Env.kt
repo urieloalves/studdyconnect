@@ -14,6 +14,7 @@ object Env {
     var DISCORD_GRANT_TYPE: String
     var DISCORD_BOT_TOKEN: String
     val DISCORD_GUILD_ID: Long
+    val DISCORD_ROLE_EVERYONE_ID: String
 
     var JWT_SECRET: String
     var JWT_EXPIRES_IN_MINUTES: Long
@@ -42,6 +43,9 @@ object Env {
         DISCORD_BOT_TOKEN = dotenv["DISCORD_BOT_TOKEN"] ?: throw Error("DISCORD_BOT_TOKEN must be provided")
         DISCORD_GUILD_ID =
             dotenv["DISCORD_GUILD_ID"]?.toLongOrNull() ?: throw Error("DISCORD_GUILD_ID must be provided")
+        DISCORD_ROLE_EVERYONE_ID =
+            dotenv["DISCORD_ROLE_EVERYONE_ID"] ?: throw Error("DISCORD_ROLE_EVERYONE_ID must be provided")
+
 
         JWT_SECRET = dotenv["JWT_SECRET"] ?: throw Error("JWT_SECRET must be provided")
         JWT_EXPIRES_IN_MINUTES =
