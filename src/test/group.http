@@ -1,0 +1,19 @@
+POST http://localhost:3333/api/v1/groups
+Content-Type: application/json
+Authorization: Bearer <token>
+
+{
+  "name": "Kotlin Masterclass",
+  "description": "Master Kotlin",
+  "course_link": "http://kotlin.com"
+}
+
+###
+POST http://localhost:3333/api/v1/groups/<id>/join
+Content-Type: application/json
+Authorization: Bearer <token>
+
+###
+POST http://localhost:3333/api/v1/groups/<id>/leave
+Content-Type: application/json
+Authorization: Bearer <token>
