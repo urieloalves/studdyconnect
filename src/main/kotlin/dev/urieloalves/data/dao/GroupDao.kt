@@ -9,7 +9,7 @@ import java.util.UUID
 
 
 interface GroupDao {
-    suspend fun create(
+    fun create(
         name: String,
         description: String,
         courseLink: String,
@@ -17,12 +17,14 @@ interface GroupDao {
         discordChannelId: Long
     )
 
-    suspend fun getByCreatedById(id: String): List<Group>
+    fun getAllCreatedBy(id: String): List<Group>
+
+    fun getById(id: String): Group?
 }
 
 class GroupDaoImpl : GroupDao {
 
-    override suspend fun create(
+    override fun create(
         name: String,
         description: String,
         courseLink: String,
@@ -42,12 +44,22 @@ class GroupDaoImpl : GroupDao {
         }
     }
 
-    override suspend fun getByCreatedById(id: String): List<Group> {
+    override fun getAllCreatedBy(id: String): List<Group> {
         return transaction {
             GroupTable.select { GroupTable.createdById.eq(id) }
                 .map {
                     GroupTable.toModel(it)
                 }
+        }
+    }
+
+    override fun getById(id: String): Group? {
+        return transaction {
+            GroupTable.select {
+                GroupTable.id.eq(id)
+            }.limit(1)
+                .map { GroupTable.toModel(it) }
+                .firstOrNull()
         }
     }
 }

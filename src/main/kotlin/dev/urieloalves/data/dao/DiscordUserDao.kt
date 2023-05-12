@@ -8,13 +8,13 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 
 interface DiscordUserDao {
-    suspend fun create(id: String, username: String, email: String)
-    suspend fun getById(id: String): DiscordUser?
+    fun create(id: String, username: String, email: String)
+    fun getById(id: String): DiscordUser?
 }
 
 class DiscordUserDaoImpl : DiscordUserDao {
 
-    override suspend fun create(id: String, username: String, email: String) {
+    override fun create(id: String, username: String, email: String) {
         transaction {
             DiscordUserTable.insert {
                 it[DiscordUserTable.id] = id
@@ -24,7 +24,7 @@ class DiscordUserDaoImpl : DiscordUserDao {
         }
     }
 
-    override suspend fun getById(id: String): DiscordUser? {
+    override fun getById(id: String): DiscordUser? {
         return transaction {
             DiscordUserTable
                 .select { DiscordUserTable.id.eq(id) }

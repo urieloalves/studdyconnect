@@ -23,7 +23,7 @@ fun Route.oAuthRoutes() {
         }
 
         get("/discord/callback") {
-            val code = call.parameters["code"] ?: throw Error("Could not obtain code from discord")
+            val code = call.request.queryParameters["code"] ?: throw Error("Could not obtain code from discord")
             call.respond(
                 oAuthService.handleDiscordOAuthCallback(code)
             )

@@ -1,4 +1,4 @@
-CREATE TABLE discord_user
+CREATE TABLE users
 (
     id       TEXT NOT NULL UNIQUE,
     username TEXT NOT NULL,

@@ -2,6 +2,7 @@ package dev.urieloalves.routes.v1
 
 import dev.urieloalves.data.dao.DiscordChannelDaoImpl
 import dev.urieloalves.data.dao.GroupDaoImpl
+import dev.urieloalves.data.dao.GroupUserDaoImpl
 import dev.urieloalves.routes.v1.requests.CreateGroupRequest
 import dev.urieloalves.routes.v1.responses.GroupResponse
 import dev.urieloalves.services.GroupService
@@ -20,7 +21,8 @@ fun Route.groupRoutes() {
 
     val groupService = GroupService(
         groupDao = GroupDaoImpl(),
-        discordChannelDao = DiscordChannelDaoImpl()
+        discordChannelDao = DiscordChannelDaoImpl(),
+        groupUserDao = GroupUserDaoImpl()
     )
 
     route("/groups") {
@@ -37,7 +39,6 @@ fun Route.groupRoutes() {
         get {
             val principal = call.principal<JWTPrincipal>()
             val userId = principal!!.payload.getClaim("id").asString()
-
             call.respond(
                 groupService.getGroups(userId).map {
                     GroupResponse(
@@ -49,6 +50,14 @@ fun Route.groupRoutes() {
                     )
                 }
             )
+        }
+
+        post("/{id}/join") {
+            val groupId = call.parameters["id"]!!
+            val principal = call.principal<JWTPrincipal>()
+            val userId = principal!!.payload.getClaim("id").asString()
+            groupService.joinGroup(groupId, userId)
+            call.response.status(HttpStatusCode.OK)
         }
     }
 }
