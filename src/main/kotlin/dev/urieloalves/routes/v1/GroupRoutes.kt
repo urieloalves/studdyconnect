@@ -59,5 +59,13 @@ fun Route.groupRoutes() {
             groupService.joinGroup(groupId, userId)
             call.response.status(HttpStatusCode.OK)
         }
+
+        post("/{id}/leave") {
+            val groupId = call.parameters["id"]!!
+            val principal = call.principal<JWTPrincipal>()
+            val userId = principal!!.payload.getClaim("id").asString()
+            groupService.leave(groupId, userId)
+            call.response.status(HttpStatusCode.OK)
+        }
     }
 }

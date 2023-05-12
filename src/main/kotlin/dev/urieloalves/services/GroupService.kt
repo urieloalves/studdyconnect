@@ -42,4 +42,16 @@ class GroupService(
             }
         }
     }
+
+    fun leave(groupId: String, userId: String) {
+        val group = groupDao.getById(groupId)
+        group?.let {
+            if (it.createdById != userId) {
+                val hasJoined = groupUserDao.hasUserJoinedGroup(userId = userId, groupId = groupId)
+                if (hasJoined) {
+                    groupUserDao.leaveGroup(userId = userId, groupId = groupId)
+                }
+            }
+        }
+    }
 }
