@@ -5,7 +5,7 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 
-object DiscordChannelsTable : Table("discord_channels") {
+object DiscordChannelTable : Table("discord_channel") {
     val id = long("id").uniqueIndex()
     val guildId = long("guild_id")
 

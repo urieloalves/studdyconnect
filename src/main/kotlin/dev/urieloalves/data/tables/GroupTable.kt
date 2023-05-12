@@ -5,7 +5,7 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 
-object GroupsTable : Table("groups") {
+object GroupTable : Table("study_group") {
     val id = text("id").uniqueIndex()
     val name = text("name")
     val description = text("description")

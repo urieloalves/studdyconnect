@@ -1,4 +1,4 @@
-CREATE TABLE discord_channels
+CREATE TABLE discord_channel
 (
     id       BIGINT NOT NULL UNIQUE,
     guild_id BIGINT NOT NULL,

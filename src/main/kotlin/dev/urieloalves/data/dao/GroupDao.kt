@@ -1,6 +1,6 @@
 package dev.urieloalves.data.dao
 
-import dev.urieloalves.data.tables.GroupsTable
+import dev.urieloalves.data.tables.GroupTable
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.UUID
@@ -27,13 +27,13 @@ class GroupDaoImpl : GroupDao {
     ) {
         val id = UUID.randomUUID().toString()
         transaction {
-            GroupsTable.insert {
-                it[GroupsTable.id] = id
-                it[GroupsTable.name] = name
-                it[GroupsTable.description] = description
-                it[GroupsTable.courseLink] = courseLink
-                it[GroupsTable.createdById] = createdById
-                it[GroupsTable.discordChannelId] = discordChannelId
+            GroupTable.insert {
+                it[GroupTable.id] = id
+                it[GroupTable.name] = name
+                it[GroupTable.description] = description
+                it[GroupTable.courseLink] = courseLink
+                it[GroupTable.createdById] = createdById
+                it[GroupTable.discordChannelId] = discordChannelId
             }
         }
     }
