@@ -2,6 +2,7 @@ package dev.urieloalves.services
 
 import dev.urieloalves.data.dao.DiscordChannelCDao
 import dev.urieloalves.data.dao.GroupDao
+import dev.urieloalves.data.models.Group
 import dev.urieloalves.routes.v1.requests.CreateGroupRequest
 
 class GroupService(
@@ -21,5 +22,9 @@ class GroupService(
             createdById = userId,
             discordChannelId = channelId
         )
+    }
+
+    suspend fun getGroups(userId: String): List<Group> {
+        return groupDao.getByCreatedById(userId)
     }
 }

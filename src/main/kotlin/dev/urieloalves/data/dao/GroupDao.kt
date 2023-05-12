@@ -1,7 +1,9 @@
 package dev.urieloalves.data.dao
 
+import dev.urieloalves.data.models.Group
 import dev.urieloalves.data.tables.GroupTable
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.UUID
 
@@ -14,6 +16,8 @@ interface GroupDao {
         createdById: String,
         discordChannelId: Long
     )
+
+    suspend fun getByCreatedById(id: String): List<Group>
 }
 
 class GroupDaoImpl : GroupDao {
@@ -35,6 +39,15 @@ class GroupDaoImpl : GroupDao {
                 it[GroupTable.createdById] = createdById
                 it[GroupTable.discordChannelId] = discordChannelId
             }
+        }
+    }
+
+    override suspend fun getByCreatedById(id: String): List<Group> {
+        return transaction {
+            GroupTable.select { GroupTable.createdById.eq(id) }
+                .map {
+                    GroupTable.toModel(it)
+                }
         }
     }
 }
