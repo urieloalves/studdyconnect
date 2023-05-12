@@ -11,21 +11,17 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
-import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
-import io.ktor.server.auth.principal
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.swagger.swaggerUI
 import io.ktor.server.response.respond
-import io.ktor.server.response.respondText
-import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 
@@ -80,12 +76,6 @@ fun Application.module() {
             oAuthRoutes()
 
             authenticate("auth-jwt") {
-                get("/auth-test") {
-                    val principal = call.principal<JWTPrincipal>()
-                    val id = principal!!.payload.getClaim("id").asString()
-                    call.respondText("Hello $id, you are authenticated.")
-                }
-
                 groupRoutes()
             }
         }
