@@ -5,26 +5,32 @@ import dev.urieloalves.data.dao.GroupDao
 import dev.urieloalves.data.dao.GroupUserDaoImpl
 import dev.urieloalves.data.models.Group
 import dev.urieloalves.routes.v1.requests.CreateGroupRequest
-import java.time.Instant
 
 class GroupService(
     val groupDao: GroupDao,
     val channelDao: ChannelDao,
-    val groupUserDao: GroupUserDaoImpl
+    val groupUserDao: GroupUserDaoImpl,
+    val discordService: DiscordService
 ) {
 
-    fun createGroup(request: CreateGroupRequest, userId: String) {
-        val channelId = Instant.now().epochSecond
-        val guildId = Instant.now().epochSecond
-        channelDao.create(id = channelId, guildId = guildId)
+    suspend fun createGroup(request: CreateGroupRequest, userId: String) {
 
-        groupDao.create(
+        discordService.createChannel(
             name = request.name,
             description = request.description,
-            courseLink = request.courseLink,
-            createdById = userId,
-            discordChannelId = channelId
+            userId = userId
         )
+//        val channelId = Instant.now().epochSecond
+//        val guildId = Instant.now().epochSecond
+//        channelDao.create(id = channelId, guildId = guildId)
+//
+//        groupDao.create(
+//            name = request.name,
+//            description = request.description,
+//            courseLink = request.courseLink,
+//            createdById = userId,
+//            discordChannelId = channelId
+//        )
     }
 
     fun getGroups(userId: String): List<Group> {

@@ -5,6 +5,7 @@ import dev.urieloalves.data.dao.GroupDaoImpl
 import dev.urieloalves.data.dao.GroupUserDaoImpl
 import dev.urieloalves.routes.v1.requests.CreateGroupRequest
 import dev.urieloalves.routes.v1.responses.GroupResponse
+import dev.urieloalves.services.DiscordService
 import dev.urieloalves.services.GroupService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
@@ -22,7 +23,8 @@ fun Route.groupRoutes() {
     val groupService = GroupService(
         groupDao = GroupDaoImpl(),
         channelDao = ChannelDaoImpl(),
-        groupUserDao = GroupUserDaoImpl()
+        groupUserDao = GroupUserDaoImpl(),
+        discordService = DiscordService()
     )
 
     route("/groups") {

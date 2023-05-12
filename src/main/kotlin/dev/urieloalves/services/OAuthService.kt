@@ -27,16 +27,8 @@ class OAuthService(
                 username = discordUser.username,
                 email = discordUser.email
             )
-
-//            DiscordClient.addToServer(
-//                userId = discordUser.id,
-//                accessToken = discordToken
-//            )
+            discordService.joinServer(userId = discordUser.id, token = discordToken)
         }
-
-//        DiscordClient.addUserToServer(discordUser.id, discordToken)
-
-        discordService.joinServer(userId = discordUser.id, token = discordToken)
 
         val token = JWT.create()
             .withClaim("id", discordUser.id)
