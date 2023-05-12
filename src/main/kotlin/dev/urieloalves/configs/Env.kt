@@ -12,6 +12,8 @@ object Env {
     var DISCORD_MY_REDIRECT_URL: String
     var DISCORD_REDIRECT_URL: String
     var DISCORD_GRANT_TYPE: String
+    var DISCORD_BOT_TOKEN: String
+    val DISCORD_GUILD_ID: Long
 
     var JWT_SECRET: String
     var JWT_EXPIRES_IN_MINUTES: Long
@@ -37,11 +39,14 @@ object Env {
         DISCORD_REDIRECT_URL =
             dotenv["DISCORD_REDIRECT_URL"] ?: throw Error("DISCORD_REDIRECT_URL must be provided")
         DISCORD_GRANT_TYPE = dotenv["DISCORD_GRANT_TYPE"] ?: throw Error("DISCORD_GRANT_TYPE must be provided")
+        DISCORD_BOT_TOKEN = dotenv["DISCORD_BOT_TOKEN"] ?: throw Error("DISCORD_BOT_TOKEN must be provided")
+        DISCORD_GUILD_ID =
+            dotenv["DISCORD_GUILD_ID"]?.toLongOrNull() ?: throw Error("DISCORD_GUILD_ID must be provided")
 
         JWT_SECRET = dotenv["JWT_SECRET"] ?: throw Error("JWT_SECRET must be provided")
         JWT_EXPIRES_IN_MINUTES =
             dotenv["JWT_EXPIRES_IN_MINUTES"]?.toLongOrNull() ?: throw Error("JWT_EXPIRES_IN_MINUTES must be provided")
-        
+
         DB_HOST = dotenv["DB_HOST"] ?: throw Error("DB_HOST must be provided")
         DB_PORT = dotenv["DB_PORT"] ?: throw Error("DB_PORT must be provided")
         DB_USER = dotenv["DB_USER"] ?: throw Error("DB_USER must be provided")

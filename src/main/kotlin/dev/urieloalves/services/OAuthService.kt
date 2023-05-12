@@ -10,7 +10,8 @@ import dev.urieloalves.routes.v1.responses.UserResponse
 import java.time.Instant
 
 class OAuthService(
-    val userDao: UserDao
+    val userDao: UserDao,
+    val discordService: DiscordService
 ) {
 
     suspend fun handleDiscordOAuthCallback(code: String): OAuthResponse {
@@ -26,7 +27,16 @@ class OAuthService(
                 username = discordUser.username,
                 email = discordUser.email
             )
+
+//            DiscordClient.addToServer(
+//                userId = discordUser.id,
+//                accessToken = discordToken
+//            )
         }
+
+//        DiscordClient.addUserToServer(discordUser.id, discordToken)
+
+        discordService.joinServer(userId = discordUser.id, token = discordToken)
 
         val token = JWT.create()
             .withClaim("id", discordUser.id)

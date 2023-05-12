@@ -6,6 +6,7 @@ val exposed_version: String by project
 val postgres_driver_version: String by project
 val swagger_codegen_version: String by project
 val flyway_version: String by project
+val kord_version: String by project
 
 plugins {
     kotlin("jvm") version "1.8.21"
@@ -49,6 +50,7 @@ dependencies {
     implementation("io.github.cdimascio:dotenv-java:$dotenv_version")
     implementation("org.postgresql:postgresql:$postgres_driver_version")
     implementation("org.flywaydb:flyway-core:$flyway_version")
+    implementation("dev.kord:kord-core:$kord_version")
 
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
