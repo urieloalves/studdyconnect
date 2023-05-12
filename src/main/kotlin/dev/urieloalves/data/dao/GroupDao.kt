@@ -13,8 +13,8 @@ interface GroupDao {
         name: String,
         description: String,
         courseLink: String,
-        createdById: String,
-        discordChannelId: Long
+        createdBy: String,
+        channelId: String
     )
 
     fun getAllCreatedBy(id: String): List<Group>
@@ -28,8 +28,8 @@ class GroupDaoImpl : GroupDao {
         name: String,
         description: String,
         courseLink: String,
-        createdById: String,
-        channelId: Long
+        createdBy: String,
+        channelId: String
     ) {
         val id = UUID.randomUUID().toString()
         transaction {
@@ -38,7 +38,7 @@ class GroupDaoImpl : GroupDao {
                 it[GroupTable.name] = name
                 it[GroupTable.description] = description
                 it[GroupTable.courseLink] = courseLink
-                it[GroupTable.createdBy] = createdById
+                it[GroupTable.createdBy] = createdBy
                 it[GroupTable.channelId] = channelId
             }
         }

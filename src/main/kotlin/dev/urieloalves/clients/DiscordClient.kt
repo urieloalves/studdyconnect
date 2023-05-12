@@ -3,7 +3,6 @@ package dev.urieloalves.clients
 import dev.urieloalves.clients.responses.GetAccessTokenResponse
 import dev.urieloalves.clients.responses.GetUserInfoResponse
 import dev.urieloalves.configs.Env
-import dev.urieloalves.data.models.User
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -40,17 +39,11 @@ object DiscordClient {
         return data.accessToken
     }
 
-    suspend fun getUser(accessToken: String): User {
-        val data = httpClient.get("${Env.DISCORD_API_BASE_URL}/users/@me") {
+    suspend fun getUser(accessToken: String): GetUserInfoResponse {
+        return httpClient.get("${Env.DISCORD_API_BASE_URL}/users/@me") {
             headers {
                 append(HttpHeaders.Authorization, "Bearer $accessToken")
             }
         }.body<GetUserInfoResponse>()
-
-        return User(
-            id = data.id,
-            username = data.username,
-            email = data.email
-        )
     }
 }

@@ -11,7 +11,7 @@ object GroupTable : Table("groups") {
     val description = text("description")
     val courseLink = text("course_link")
     val createdBy = text("created_by")
-    val channelId = long("channelId")
+    val channelId = text("channel_id")
 
     fun fromModel(it: UpdateBuilder<Number>, group: Group) {
         it[id] = group.id

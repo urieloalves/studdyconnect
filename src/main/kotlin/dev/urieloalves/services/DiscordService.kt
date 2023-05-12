@@ -11,16 +11,16 @@ import dev.urieloalves.configs.Env
 
 class DiscordService {
 
-    suspend fun joinServer(userId: String, token: String) {
+    suspend fun joinServer(discordId: String, token: String) {
         val kord = Kord(Env.DISCORD_BOT_TOKEN)
         kord.rest.guild.addGuildMember(
             guildId = Snowflake(Env.DISCORD_GUILD_ID),
-            userId = Snowflake(userId.toLong()),
+            userId = Snowflake(discordId),
             token = token
         ) {}
     }
 
-    suspend fun createChannel(name: String, description: String, userId: String) {
+    suspend fun createChannel(name: String, description: String, discordId: String): String {
         val guildId = Snowflake(Env.DISCORD_GUILD_ID)
         val kord = Kord(Env.DISCORD_BOT_TOKEN)
         val roleIdEveryone = 1106606150306242682
@@ -41,27 +41,29 @@ class DiscordService {
 
         kord.rest.channel.editMemberPermissions(
             channelId = channel.id,
-            memberId = Snowflake(userId)
+            memberId = Snowflake(discordId)
+        ) {
+            allowed = Permissions(Permission.All)
+        }
+
+        return channel.id.toString()
+    }
+
+    suspend fun joinChannel(channelId: String, discordId: String) {
+        val kord = Kord(Env.DISCORD_BOT_TOKEN)
+        kord.rest.channel.editMemberPermissions(
+            channelId = Snowflake(channelId),
+            memberId = Snowflake(discordId)
         ) {
             allowed = Permissions(Permission.All)
         }
     }
 
-    suspend fun joinChannel(channelId: String, userId: String) {
+    suspend fun leaveChannel(channelId: String, discordId: String) {
         val kord = Kord(Env.DISCORD_BOT_TOKEN)
         kord.rest.channel.editMemberPermissions(
             channelId = Snowflake(channelId),
-            memberId = Snowflake(userId)
-        ) {
-            allowed = Permissions(Permission.All)
-        }
-    }
-
-    suspend fun leaveChannel(channelId: String, userId: String) {
-        val kord = Kord(Env.DISCORD_BOT_TOKEN)
-        kord.rest.channel.editMemberPermissions(
-            channelId = Snowflake(channelId),
-            memberId = Snowflake(userId)
+            memberId = Snowflake(discordId)
         ) {
             denied = Permissions(Permission.All)
         }

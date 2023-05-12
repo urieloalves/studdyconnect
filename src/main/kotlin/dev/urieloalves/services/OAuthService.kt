@@ -19,28 +19,29 @@ class OAuthService(
 
         val discordUser = DiscordClient.getUser(discordToken)
 
-        val createdDiscordUser = userDao.getById(discordUser.id)
+        var existentUser = userDao.getByDiscordId(discordUser.id)
 
-        if (createdDiscordUser == null) {
+        if (existentUser == null) {
             userDao.create(
-                id = discordUser.id,
+                discordId = discordUser.id,
                 username = discordUser.username,
                 email = discordUser.email
             )
-            discordService.joinServer(userId = discordUser.id, token = discordToken)
+            existentUser = userDao.getByDiscordId(discordUser.id)
+            discordService.joinServer(discordId = discordUser.id, token = discordToken)
         }
 
         val token = JWT.create()
-            .withClaim("id", discordUser.id)
+            .withClaim("id", existentUser!!.id)
             .withExpiresAt(Instant.now().plusSeconds(Env.JWT_EXPIRES_IN_MINUTES * 60))
             .sign(Algorithm.HMAC256(Env.JWT_SECRET))
 
         return OAuthResponse(
             token = token,
             user = UserResponse(
-                id = discordUser.id,
-                username = discordUser.username,
-                email = discordUser.email
+                id = existentUser.id,
+                username = existentUser.username,
+                email = existentUser.email
             )
         )
     }

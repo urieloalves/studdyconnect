@@ -6,5 +6,5 @@ data class Group(
     val description: String,
     val courseLink: String,
     val createdBy: String,
-    val channelId: Long
+    val channelId: String
 )
