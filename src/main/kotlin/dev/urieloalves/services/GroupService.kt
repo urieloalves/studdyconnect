@@ -13,7 +13,7 @@ class GroupService(
     val groupUserDao: GroupUserDaoImpl
 ) {
 
-    suspend fun createGroup(request: CreateGroupRequest, userId: String) {
+    fun createGroup(request: CreateGroupRequest, userId: String) {
         val channelId = Instant.now().epochSecond
         val guildId = Instant.now().epochSecond
         channelDao.create(id = channelId, guildId = guildId)
@@ -27,7 +27,7 @@ class GroupService(
         )
     }
 
-    suspend fun getGroups(userId: String): List<Group> {
+    fun getGroups(userId: String): List<Group> {
         return groupDao.getAllCreatedBy(userId)
     }
 
