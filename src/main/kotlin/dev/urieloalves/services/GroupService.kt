@@ -49,7 +49,7 @@ class GroupService(
         }
     }
 
-    suspend fun leave(groupId: String, userId: String) {
+    suspend fun leaveGroup(groupId: String, userId: String) {
         val user = userDao.getById(userId)
         val group = groupDao.getById(groupId)
         group?.let {

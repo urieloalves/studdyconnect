@@ -66,7 +66,7 @@ fun Route.groupRoutes() {
             val groupId = call.parameters["id"]!!
             val principal = call.principal<JWTPrincipal>()
             val userId = principal!!.payload.getClaim("id").asString()
-            groupService.leave(groupId, userId)
+            groupService.leaveGroup(groupId, userId)
             call.response.status(HttpStatusCode.OK)
         }
     }
