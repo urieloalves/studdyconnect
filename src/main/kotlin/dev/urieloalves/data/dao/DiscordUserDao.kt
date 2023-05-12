@@ -9,7 +9,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 interface DiscordUserDao {
     suspend fun create(id: String, username: String, email: String)
-    suspend fun create(discordUser: DiscordUser)
     suspend fun getById(id: String): DiscordUser?
 }
 
@@ -21,14 +20,6 @@ class DiscordUserDaoImpl : DiscordUserDao {
                 it[DiscordUsersTable.id] = id
                 it[DiscordUsersTable.username] = username
                 it[DiscordUsersTable.email] = email
-            }
-        }
-    }
-
-    override suspend fun create(discordUser: DiscordUser) {
-        transaction {
-            DiscordUsersTable.insert {
-                fromModel(it, discordUser)
             }
         }
     }

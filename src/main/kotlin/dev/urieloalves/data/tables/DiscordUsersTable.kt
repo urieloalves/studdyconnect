@@ -9,7 +9,7 @@ object DiscordUsersTable : Table("discord_users") {
     val id = text("id").uniqueIndex()
     val username = text("username")
     val email = text("email").uniqueIndex()
-    
+
     fun fromModel(it: UpdateBuilder<Number>, discordUser: DiscordUser) {
         it[id] = discordUser.id
         it[username] = discordUser.username

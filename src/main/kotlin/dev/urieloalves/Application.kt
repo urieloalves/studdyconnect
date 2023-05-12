@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import dev.urieloalves.configs.DatabaseFactory
 import dev.urieloalves.configs.Env
+import dev.urieloalves.routes.v1.groupRoutes
 import dev.urieloalves.routes.v1.oAuthRoutes
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
@@ -74,7 +75,7 @@ fun Application.module() {
 
     routing {
         swaggerUI(path = "/api/docs", swaggerFile = "openapi/documentation.yaml")
-        
+
         route("/api/v1") {
             oAuthRoutes()
 
@@ -84,6 +85,8 @@ fun Application.module() {
                     val id = principal!!.payload.getClaim("id").asString()
                     call.respondText("Hello $id, you are authenticated.")
                 }
+
+                groupRoutes()
             }
         }
     }

@@ -9,7 +9,6 @@ import io.ktor.server.response.respondRedirect
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
-import kotlinx.coroutines.runBlocking
 
 fun Route.oAuthRoutes() {
 
@@ -25,12 +24,9 @@ fun Route.oAuthRoutes() {
 
         get("/discord/callback") {
             val code = call.parameters["code"] ?: throw Error("Could not obtain code from discord")
-
-            runBlocking {
-                call.respond(
-                    oAuthService.handleDiscordOAuthCallback(code)
-                )
-            }
+            call.respond(
+                oAuthService.handleDiscordOAuthCallback(code)
+            )
         }
     }
 }
