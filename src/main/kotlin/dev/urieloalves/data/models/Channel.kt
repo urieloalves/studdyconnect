@@ -1,6 +1,6 @@
 package dev.urieloalves.data.models
 
-data class DiscordChannel(
+data class Channel(
     val id: Long,
     val guildId: Long,
 )

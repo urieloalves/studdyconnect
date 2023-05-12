@@ -4,13 +4,13 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import dev.urieloalves.clients.DiscordClient
 import dev.urieloalves.configs.Env
-import dev.urieloalves.data.dao.DiscordUserDao
+import dev.urieloalves.data.dao.UserDao
 import dev.urieloalves.routes.v1.responses.OAuthResponse
 import dev.urieloalves.routes.v1.responses.UserResponse
 import java.time.Instant
 
 class OAuthService(
-    val discordUserDao: DiscordUserDao
+    val userDao: UserDao
 ) {
 
     suspend fun handleDiscordOAuthCallback(code: String): OAuthResponse {
@@ -18,10 +18,10 @@ class OAuthService(
 
         val discordUser = DiscordClient.getUser(discordToken)
 
-        val createdDiscordUser = discordUserDao.getById(discordUser.id)
+        val createdDiscordUser = userDao.getById(discordUser.id)
 
         if (createdDiscordUser == null) {
-            discordUserDao.create(
+            userDao.create(
                 id = discordUser.id,
                 username = discordUser.username,
                 email = discordUser.email

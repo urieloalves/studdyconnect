@@ -1,6 +1,6 @@
 package dev.urieloalves.services
 
-import dev.urieloalves.data.dao.DiscordChannelCDao
+import dev.urieloalves.data.dao.ChannelDao
 import dev.urieloalves.data.dao.GroupDao
 import dev.urieloalves.data.dao.GroupUserDaoImpl
 import dev.urieloalves.data.models.Group
@@ -9,14 +9,14 @@ import java.time.Instant
 
 class GroupService(
     val groupDao: GroupDao,
-    val discordChannelDao: DiscordChannelCDao,
+    val channelDao: ChannelDao,
     val groupUserDao: GroupUserDaoImpl
 ) {
 
     suspend fun createGroup(request: CreateGroupRequest, userId: String) {
         val channelId = Instant.now().epochSecond
         val guildId = Instant.now().epochSecond
-        discordChannelDao.create(id = channelId, guildId = guildId)
+        channelDao.create(id = channelId, guildId = guildId)
 
         groupDao.create(
             name = request.name,
