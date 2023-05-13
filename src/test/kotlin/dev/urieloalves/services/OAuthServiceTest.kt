@@ -1,6 +1,5 @@
 package dev.urieloalves.services
 
-import dev.urieloalves.clients.DiscordClient
 import dev.urieloalves.clients.responses.DiscordUserResponse
 import dev.urieloalves.data.dao.UserDao
 import dev.urieloalves.data.models.User
@@ -22,12 +21,10 @@ import kotlin.test.assertEquals
 class OAuthServiceTest {
     private val userDao = mockk<UserDao>()
     private val discordService = mockk<DiscordService>()
-    private val discordClient = mockk<DiscordClient>()
     private val jwtService = mockk<JwtService>()
     private val oAuthService = OAuthService(
         userDao = userDao,
         discordService = discordService,
-        discordClient = discordClient,
         jwtService = jwtService
     )
 
@@ -51,8 +48,8 @@ class OAuthServiceTest {
 
     @Test
     fun `should return a token and user`() {
-        coEvery { discordClient.getAccessToken(any()) } returns "discord-token"
-        coEvery { discordClient.getUser("discord-token") } returns discordUserResponse
+        coEvery { discordService.getAccessToken(any()) } returns "discord-token"
+        coEvery { discordService.getUser("discord-token") } returns discordUserResponse
         every { userDao.getByDiscordId("discord-id") } returns user
         every { jwtService.generateToken("user-id") } returns "token"
 
@@ -68,8 +65,8 @@ class OAuthServiceTest {
 
     @Test
     fun `should create user and join discord server if user is not registered`() {
-        coEvery { discordClient.getAccessToken(any()) } returns "discord-token"
-        coEvery { discordClient.getUser("discord-token") } returns discordUserResponse
+        coEvery { discordService.getAccessToken(any()) } returns "discord-token"
+        coEvery { discordService.getUser("discord-token") } returns discordUserResponse
         every { userDao.getByDiscordId("discord-id") } returns null andThen user
         every {
             userDao.create(

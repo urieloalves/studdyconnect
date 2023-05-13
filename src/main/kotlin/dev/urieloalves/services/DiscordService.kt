@@ -7,19 +7,30 @@ import dev.kord.core.Kord
 import dev.kord.rest.service.createTextChannel
 import dev.kord.rest.service.editMemberPermissions
 import dev.kord.rest.service.editRolePermission
+import dev.urieloalves.clients.DiscordClient
+import dev.urieloalves.clients.responses.DiscordUserResponse
 import dev.urieloalves.configs.Env
 
 
 interface DiscordService {
+    suspend fun getAccessToken(code: String): String
+    suspend fun getUser(accessToken: String): DiscordUserResponse
     suspend fun joinServer(discordId: String, token: String)
     suspend fun createChannel(name: String, description: String, discordId: String): String
-
     suspend fun joinChannel(channelId: String, discordId: String)
-
     suspend fun leaveChannel(channelId: String, discordId: String)
 }
 
-class DiscordServiceImpl : DiscordService {
+class DiscordServiceImpl(
+    val discordClient: DiscordClient
+) : DiscordService {
+    override suspend fun getAccessToken(code: String): String {
+        return discordClient.getAccessToken(code)
+    }
+
+    override suspend fun getUser(accessToken: String): DiscordUserResponse {
+        return discordClient.getUser(accessToken)
+    }
 
     override suspend fun joinServer(discordId: String, token: String) {
         val kord = Kord(Env.DISCORD_BOT_TOKEN)

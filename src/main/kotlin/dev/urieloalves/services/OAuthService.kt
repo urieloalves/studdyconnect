@@ -1,6 +1,5 @@
 package dev.urieloalves.services
 
-import dev.urieloalves.clients.DiscordClient
 import dev.urieloalves.data.dao.UserDao
 import dev.urieloalves.routes.v1.responses.OAuthResponse
 import dev.urieloalves.routes.v1.responses.UserResponse
@@ -8,14 +7,13 @@ import dev.urieloalves.routes.v1.responses.UserResponse
 class OAuthService(
     val userDao: UserDao,
     val discordService: DiscordService,
-    val discordClient: DiscordClient,
     val jwtService: JwtService
 ) {
 
     suspend fun handleDiscordOAuthCallback(code: String): OAuthResponse {
-        val discordToken = discordClient.getAccessToken(code)
+        val discordToken = discordService.getAccessToken(code)
 
-        val discordUser = discordClient.getUser(discordToken)
+        val discordUser = discordService.getUser(discordToken)
 
         var existentUser = userDao.getByDiscordId(discordUser.id)
 

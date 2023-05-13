@@ -17,8 +17,9 @@ fun Route.oAuthRoutes() {
 
     val oAuthService = OAuthService(
         userDao = UserDaoImpl(),
-        discordService = DiscordServiceImpl(),
-        discordClient = DiscordClientImpl(),
+        discordService = DiscordServiceImpl(
+            discordClient = DiscordClientImpl()
+        ),
         jwtService = JwtServiceImpl()
     )
 

@@ -1,5 +1,6 @@
 package dev.urieloalves.routes.v1
 
+import dev.urieloalves.clients.DiscordClientImpl
 import dev.urieloalves.data.dao.GroupDaoImpl
 import dev.urieloalves.data.dao.GroupUserDaoImpl
 import dev.urieloalves.data.dao.UserDaoImpl
@@ -24,7 +25,9 @@ fun Route.groupRoutes() {
         userDao = UserDaoImpl(),
         groupDao = GroupDaoImpl(),
         groupUserDao = GroupUserDaoImpl(),
-        discordService = DiscordServiceImpl()
+        discordService = DiscordServiceImpl(
+            discordClient = DiscordClientImpl()
+        )
     )
 
     route("/groups") {
