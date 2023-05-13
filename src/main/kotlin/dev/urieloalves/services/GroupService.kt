@@ -10,6 +10,7 @@ interface GroupService {
     fun getGroups(userId: String): List<Group>
     suspend fun joinGroup(groupId: String, userId: String)
     suspend fun leaveGroup(groupId: String, userId: String)
+    fun searchGroups(text: String): List<Group>
 }
 
 class GroupServiceImpl(
@@ -66,5 +67,9 @@ class GroupServiceImpl(
                 }
             }
         }
+    }
+
+    override fun searchGroups(text: String): List<Group> {
+        return groupDao.searchGroup(text)
     }
 }

@@ -51,6 +51,21 @@ fun Route.groupRoutes() {
             )
         }
 
+        get("/search") {
+            val text = call.request.queryParameters["text"] ?: ""
+            call.respond(
+                groupService.searchGroups(text).map {
+                    GroupResponse(
+                        id = it.id,
+                        name = it.name,
+                        description = it.description,
+                        courseLink = it.courseLink,
+                        createdBy = it.createdBy
+                    )
+                }
+            )
+        }
+
         post("/{id}/join") {
             val groupId = call.parameters["id"]!!
             val userId = call.getUserIdFromToken()!!

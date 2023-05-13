@@ -7,6 +7,8 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.lowerCase
+import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.UUID
@@ -26,6 +28,7 @@ interface GroupDao {
     fun hasUserJoinedGroup(userId: String, groupId: String): Boolean
     fun joinGroup(userId: String, groupId: String)
     fun leaveGroup(userId: String, groupId: String)
+    fun searchGroup(text: String): List<Group>
 }
 
 class GroupDaoImpl : GroupDao {
@@ -96,4 +99,13 @@ class GroupDaoImpl : GroupDao {
         }
     }
 
+    override fun searchGroup(text: String): List<Group> {
+        val lowercaseText = text.lowercase()
+        return transaction {
+            GroupTable.select {
+                GroupTable.name.lowerCase().like("%$lowercaseText%") or
+                        GroupTable.description.lowerCase().like("%$lowercaseText%")
+            }.map { GroupTable.toModel(it) }
+        }
+    }
 }

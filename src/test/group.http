@@ -9,6 +9,10 @@ Authorization: Bearer <token>
 }
 
 ###
+GET http://localhost:3333/api/v1/groups/search?text=java
+Authorization: Bearer <token>
+
+###
 POST http://localhost:3333/api/v1/groups/<id>/join
 Content-Type: application/json
 Authorization: Bearer <token>

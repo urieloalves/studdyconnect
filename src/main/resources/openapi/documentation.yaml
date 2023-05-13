@@ -44,6 +44,24 @@ paths:
         required: true
         schema:
           type: "string"
+  /api/v1/groups/search:
+    get:
+      description: ""
+      parameters:
+      - name: "text"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/GroupResponse"
   /api/v1/oauth/discord:
     get:
       description: ""
