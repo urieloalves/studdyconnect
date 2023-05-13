@@ -1,6 +1,6 @@
-package dev.urieloalves.data.models
+package dev.urieloalves.data.models.errors
 
-class CustomException(
+open class CustomException(
     val statusCode: Int,
     override val message: String,
     override val cause: Throwable? = null

@@ -1,6 +1,6 @@
 package dev.urieloalves.configs
 
-import dev.urieloalves.data.models.CustomException
+import dev.urieloalves.data.models.errors.CustomException
 import io.github.cdimascio.dotenv.Dotenv
 
 object Env {

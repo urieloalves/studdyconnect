@@ -3,7 +3,7 @@ package dev.urieloalves.services
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import dev.urieloalves.configs.Env
-import dev.urieloalves.data.models.CustomException
+import dev.urieloalves.data.models.errors.CustomException
 import java.time.Instant
 
 interface JwtService {

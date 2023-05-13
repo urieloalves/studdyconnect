@@ -10,7 +10,7 @@ import dev.kord.rest.service.editRolePermission
 import dev.urieloalves.clients.DiscordClient
 import dev.urieloalves.clients.responses.DiscordUserResponse
 import dev.urieloalves.configs.Env
-import dev.urieloalves.data.models.CustomException
+import dev.urieloalves.data.models.errors.CustomException
 
 
 interface DiscordService {
