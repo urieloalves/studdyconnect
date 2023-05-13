@@ -1,23 +1,21 @@
 package dev.urieloalves.services
 
-import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
 import dev.urieloalves.clients.DiscordClient
-import dev.urieloalves.configs.Env
 import dev.urieloalves.data.dao.UserDao
 import dev.urieloalves.routes.v1.responses.OAuthResponse
 import dev.urieloalves.routes.v1.responses.UserResponse
-import java.time.Instant
 
 class OAuthService(
     val userDao: UserDao,
-    val discordService: DiscordService
+    val discordService: DiscordService,
+    val discordClient: DiscordClient,
+    val jwtService: JwtService
 ) {
 
     suspend fun handleDiscordOAuthCallback(code: String): OAuthResponse {
-        val discordToken = DiscordClient.getAccessToken(code)
+        val discordToken = discordClient.getAccessToken(code)
 
-        val discordUser = DiscordClient.getUser(discordToken)
+        val discordUser = discordClient.getUser(discordToken)
 
         var existentUser = userDao.getByDiscordId(discordUser.id)
 
@@ -31,10 +29,7 @@ class OAuthService(
             discordService.joinServer(discordId = discordUser.id, token = discordToken)
         }
 
-        val token = JWT.create()
-            .withClaim("id", existentUser!!.id)
-            .withExpiresAt(Instant.now().plusSeconds(Env.JWT_EXPIRES_IN_MINUTES * 60))
-            .sign(Algorithm.HMAC256(Env.JWT_SECRET))
+        val token = jwtService.generateToken(existentUser!!.id)
 
         return OAuthResponse(
             token = token,

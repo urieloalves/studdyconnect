@@ -15,7 +15,12 @@ import io.ktor.http.parameters
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-object DiscordClient {
+interface DiscordClient {
+    suspend fun getAccessToken(code: String): String
+    suspend fun getUser(accessToken: String): GetUserInfoResponse
+}
+
+class DiscordClientImpl : DiscordClient {
     private val httpClient = HttpClient(CIO) {
         install(ContentNegotiation) {
             json(Json {
@@ -24,7 +29,7 @@ object DiscordClient {
         }
     }
 
-    suspend fun getAccessToken(code: String): String {
+    override suspend fun getAccessToken(code: String): String {
         val data = httpClient.submitForm(
             url = "${Env.DISCORD_API_BASE_URL}/oauth2/token",
             formParameters = parameters {
@@ -39,7 +44,7 @@ object DiscordClient {
         return data.accessToken
     }
 
-    suspend fun getUser(accessToken: String): GetUserInfoResponse {
+    override suspend fun getUser(accessToken: String): GetUserInfoResponse {
         return httpClient.get("${Env.DISCORD_API_BASE_URL}/users/@me") {
             headers {
                 append(HttpHeaders.Authorization, "Bearer $accessToken")
