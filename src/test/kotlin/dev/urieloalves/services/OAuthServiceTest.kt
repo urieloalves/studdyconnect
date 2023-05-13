@@ -29,7 +29,6 @@ class OAuthServiceTest {
 
     @AfterEach
     fun cleanup() {
-        println(1)
         clearAllMocks()
     }
 
