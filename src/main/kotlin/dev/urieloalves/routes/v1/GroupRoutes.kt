@@ -4,14 +4,13 @@ import dev.urieloalves.clients.DiscordClientImpl
 import dev.urieloalves.data.dao.GroupDaoImpl
 import dev.urieloalves.data.dao.GroupUserDaoImpl
 import dev.urieloalves.data.dao.UserDaoImpl
+import dev.urieloalves.getUserIdFromToken
 import dev.urieloalves.routes.v1.requests.CreateGroupRequest
 import dev.urieloalves.routes.v1.responses.GroupResponse
 import dev.urieloalves.services.DiscordServiceImpl
 import dev.urieloalves.services.GroupServiceImpl
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
-import io.ktor.server.auth.jwt.JWTPrincipal
-import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -32,18 +31,15 @@ fun Route.groupRoutes() {
 
     route("/groups") {
         post {
-            val principal = call.principal<JWTPrincipal>()
-            val userId = principal!!.payload.getClaim("id").asString()
             groupService.createGroup(
                 request = call.receive<CreateGroupRequest>(),
-                userId = userId
+                userId = call.getUserIdFromToken()!!
             )
             call.response.status(HttpStatusCode.Created)
         }
 
         get {
-            val principal = call.principal<JWTPrincipal>()
-            val userId = principal!!.payload.getClaim("id").asString()
+            val userId = call.getUserIdFromToken()!!
             call.respond(
                 groupService.getGroups(userId).map {
                     GroupResponse(
@@ -59,16 +55,14 @@ fun Route.groupRoutes() {
 
         post("/{id}/join") {
             val groupId = call.parameters["id"]!!
-            val principal = call.principal<JWTPrincipal>()
-            val userId = principal!!.payload.getClaim("id").asString()
+            val userId = call.getUserIdFromToken()!!
             groupService.joinGroup(groupId, userId)
             call.response.status(HttpStatusCode.OK)
         }
 
         post("/{id}/leave") {
             val groupId = call.parameters["id"]!!
-            val principal = call.principal<JWTPrincipal>()
-            val userId = principal!!.payload.getClaim("id").asString()
+            val userId = call.getUserIdFromToken()!!
             groupService.leaveGroup(groupId, userId)
             call.response.status(HttpStatusCode.OK)
         }

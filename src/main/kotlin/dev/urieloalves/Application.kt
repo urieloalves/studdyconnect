@@ -11,11 +11,13 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
+import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
+import io.ktor.server.auth.principal
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
@@ -29,7 +31,6 @@ fun main() {
     DatabaseFactory.init()
     embeddedServer(Netty, port = Env.PORT, module = Application::module).start(wait = true)
 }
-
 
 @Suppress("unused") // application.conf references the main function. This annotation prevents the IDE from marking it as unused.
 fun Application.module() {
@@ -80,4 +81,9 @@ fun Application.module() {
             }
         }
     }
+}
+
+fun ApplicationCall.getUserIdFromToken(): String? {
+    val principal = this.principal<JWTPrincipal>()
+    return principal?.payload?.getClaim("id")?.asString()
 }

@@ -1,6 +1,6 @@
 POST http://localhost:3333/api/v1/groups
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwNjYyODM0MzQ2ODg5MjU4MjciLCJleHAiOjE2ODM5MjYxNDJ9.Zpbu4zdgWBoDOvZI1lNLu_ixXrm41AkmlVj-aW5zYzY
+Authorization: Bearer <token>
 
 {
   "name": "Java Masterclass",
