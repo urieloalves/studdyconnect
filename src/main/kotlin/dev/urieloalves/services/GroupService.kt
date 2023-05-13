@@ -50,17 +50,20 @@ class GroupServiceImpl(
             logger.error(msg, e)
             when {
                 e is CustomException -> throw e
-                else -> throw ServerException(
-                    message = msg,
-                    cause = e
-                )
+                else -> throw ServerException(msg, e)
             }
         }
     }
 
     override fun getGroups(userId: String): List<Group> {
-        logger.info("Getting groups for user '$userId'")
-        return groupDao.getAllCreatedBy(userId)
+        try {
+            logger.info("Getting groups for user '$userId'")
+            return groupDao.getAllCreatedBy(userId)
+        } catch (e: Exception) {
+            val msg = "An error occurred when getting groups for user '$userId'"
+            logger.error(msg, e)
+            throw ServerException(msg, e)
+        }
     }
 
     override suspend fun joinGroup(groupId: String, userId: String) {
@@ -81,10 +84,7 @@ class GroupServiceImpl(
             logger.error(msg, e)
             when {
                 e is CustomException -> throw e
-                else -> throw ServerException(
-                    message = msg,
-                    cause = e
-                )
+                else -> throw ServerException(msg, e)
             }
         }
 
@@ -108,12 +108,22 @@ class GroupServiceImpl(
         } catch (e: Exception) {
             val msg = "User '$userId' could not be removed from group '$groupId'"
             logger.error(msg, e)
-
+            when {
+                e is CustomException -> throw e
+                else -> throw ServerException(msg, e)
+            }
         }
     }
 
     override fun searchGroups(text: String): List<Group> {
-        logger.info("Searching groups based on text '$text'")
-        return groupDao.searchGroup(text)
+        try {
+            logger.info("Searching groups based with text '$text'")
+            return groupDao.searchGroup(text)
+        } catch (e: Exception) {
+            val msg = "An error occurred when searching for groups with text '$text'"
+            logger.error(msg, e)
+            throw ServerException(msg, e)
+        }
+
     }
 }

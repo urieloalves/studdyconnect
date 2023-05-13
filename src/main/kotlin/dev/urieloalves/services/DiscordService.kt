@@ -35,10 +35,7 @@ class DiscordServiceImpl(
         } catch (e: Exception) {
             val msg = "Could not get discord access token"
             logger.error(msg, e)
-            throw DiscordException(
-                message = msg,
-                cause = e
-            )
+            throw DiscordException(msg, e)
         }
     }
 
@@ -48,10 +45,7 @@ class DiscordServiceImpl(
         } catch (e: Exception) {
             val msg = "Could not get discord user"
             logger.error(msg, e)
-            throw DiscordException(
-                message = msg,
-                cause = e
-            )
+            throw DiscordException(msg, e)
         }
     }
 
@@ -59,19 +53,17 @@ class DiscordServiceImpl(
         try {
             val kord = Kord(Env.DISCORD_BOT_TOKEN)
 
-            logger.info("Adding discord user '$discordId' to StudyConnect Server")
+            logger.info("Adding discord user '$discordId' to StudyConnect discord server")
             kord.rest.guild.addGuildMember(
                 guildId = Snowflake(Env.DISCORD_GUILD_ID),
                 userId = Snowflake(discordId),
                 token = token
             ) {}
+            logger.info("Discord user '$discordId' was successfully added to StudyConnect discord server")
         } catch (e: Exception) {
             val msg = "Could not add discord user '$discordId' to StudyConnect server"
             logger.error(msg, e)
-            throw DiscordException(
-                message = msg,
-                cause = e
-            )
+            throw DiscordException(msg, e)
         }
     }
 
@@ -79,13 +71,14 @@ class DiscordServiceImpl(
         try {
             val kord = Kord(Env.DISCORD_BOT_TOKEN)
 
-            logger.info("Creating discord channel for discord user '$discordId'")
+            logger.info("Creating discord channel by discord user '$discordId'")
             val channel = kord.rest.guild.createTextChannel(
                 guildId = Snowflake(Env.DISCORD_GUILD_ID),
                 name = name
             ) {
                 topic = description
             }
+            logger.info("Discord channel '${channel.id}' was successfully created by discord user '$discordId'")
 
             logger.info("Hiding discord channel `${channel.id}` from everyone")
             kord.rest.channel.editRolePermission(
@@ -94,23 +87,22 @@ class DiscordServiceImpl(
             ) {
                 denied = Permissions(Permission.All)
             }
+            logger.info("Discord channel was successfully hidden from everyone")
 
-            logger.info("Allowing discord user '$discordId' to use `${channel.id}`")
+            logger.info("Allowing discord user '$discordId' to use discord channel `${channel.id}`")
             kord.rest.channel.editMemberPermissions(
                 channelId = channel.id,
                 memberId = Snowflake(discordId)
             ) {
                 allowed = Permissions(Permission.All)
             }
+            logger.info("Discord user '$discordId' is now allowed to use discord channel '${channel.id}'")
 
             return channel.id.toString()
         } catch (e: Exception) {
             val msg = "Could not create channel for discord user '$discordId'"
             logger.error(msg, e)
-            throw DiscordException(
-                message = msg,
-                cause = e
-            )
+            throw DiscordException(msg, e)
         }
     }
 
@@ -125,13 +117,11 @@ class DiscordServiceImpl(
             ) {
                 allowed = Permissions(Permission.All)
             }
+            logger.info("Discord user '$discordId' is now allowed to use discord channel '$discordId'")
         } catch (e: Exception) {
             val msg = "Could not add discord user '$discordId' to discord channel '$channelId'"
             logger.error(msg, e)
-            throw DiscordException(
-                message = msg,
-                cause = e
-            )
+            throw DiscordException(msg, e)
         }
     }
 
@@ -146,13 +136,11 @@ class DiscordServiceImpl(
             ) {
                 denied = Permissions(Permission.All)
             }
+            logger.info("Discord channel '$channelId' was successfully hidden from discord user '$discordId'")
         } catch (e: Exception) {
             val msg = "Could not remove discord user `$discordId` from channel '$channelId'"
             logger.error(msg, e)
-            throw DiscordException(
-                message = msg,
-                cause = e
-            )
+            throw DiscordException(msg, e)
         }
     }
 }
