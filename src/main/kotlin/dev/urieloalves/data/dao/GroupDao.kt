@@ -2,6 +2,10 @@ package dev.urieloalves.data.dao
 
 import dev.urieloalves.data.models.Group
 import dev.urieloalves.data.tables.GroupTable
+import dev.urieloalves.data.tables.GroupUserTable
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -18,8 +22,10 @@ interface GroupDao {
     )
 
     fun getAllCreatedBy(id: String): List<Group>
-
     fun getById(id: String): Group?
+    fun hasUserJoinedGroup(userId: String, groupId: String): Boolean
+    fun joinGroup(userId: String, groupId: String)
+    fun leaveGroup(userId: String, groupId: String)
 }
 
 class GroupDaoImpl : GroupDao {
@@ -62,4 +68,32 @@ class GroupDaoImpl : GroupDao {
                 .firstOrNull()
         }
     }
+
+    override fun hasUserJoinedGroup(userId: String, groupId: String): Boolean {
+        val exist = transaction {
+            GroupUserTable.select {
+                GroupUserTable.userId.eq(userId) and GroupUserTable.groupId.eq(groupId)
+            }.limit(1)
+                .firstOrNull()
+        }
+        return exist != null
+    }
+
+    override fun joinGroup(userId: String, groupId: String) {
+        transaction {
+            GroupUserTable.insert {
+                it[GroupUserTable.userId] = userId
+                it[GroupUserTable.groupId] = groupId
+            }
+        }
+    }
+
+    override fun leaveGroup(userId: String, groupId: String) {
+        transaction {
+            GroupUserTable.deleteWhere {
+                GroupUserTable.userId.eq(userId) and GroupUserTable.groupId.eq(groupId)
+            }
+        }
+    }
+
 }

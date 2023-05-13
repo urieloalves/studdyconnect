@@ -2,7 +2,6 @@ package dev.urieloalves.routes.v1
 
 import dev.urieloalves.clients.DiscordClientImpl
 import dev.urieloalves.data.dao.GroupDaoImpl
-import dev.urieloalves.data.dao.GroupUserDaoImpl
 import dev.urieloalves.data.dao.UserDaoImpl
 import dev.urieloalves.getUserIdFromToken
 import dev.urieloalves.routes.v1.requests.CreateGroupRequest
@@ -23,7 +22,6 @@ fun Route.groupRoutes() {
     val groupService = GroupServiceImpl(
         userDao = UserDaoImpl(),
         groupDao = GroupDaoImpl(),
-        groupUserDao = GroupUserDaoImpl(),
         discordService = DiscordServiceImpl(
             discordClient = DiscordClientImpl()
         )
