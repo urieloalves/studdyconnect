@@ -7,6 +7,7 @@ val postgres_driver_version: String by project
 val swagger_codegen_version: String by project
 val flyway_version: String by project
 val kord_version: String by project
+val mockk_version: String by project
 
 plugins {
     kotlin("jvm") version "1.8.21"
@@ -54,4 +55,5 @@ dependencies {
 
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    testImplementation("io.mockk:mockk:${mockk_version}")
 }
