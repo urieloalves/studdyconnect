@@ -1,5 +1,6 @@
 package dev.urieloalves.configs
 
+import dev.urieloalves.data.models.CustomException
 import io.github.cdimascio.dotenv.Dotenv
 
 object Env {
@@ -30,31 +31,37 @@ object Env {
 
         PORT = dotenv["PORT"]?.toIntOrNull() ?: 8080
 
-        DISCORD_CLIENT_ID = dotenv["DISCORD_CLIENT_ID"] ?: throw Error("DISCORD_CLIENT_ID must be provided")
+        DISCORD_CLIENT_ID = dotenv["DISCORD_CLIENT_ID"] ?: throw notFound("DISCORD_CLIENT_ID")
         DISCORD_CLIENT_SECRET =
-            dotenv["DISCORD_CLIENT_SECRET"] ?: throw Error("DISCORD_CLIENT_SECRET must be provided")
+            dotenv["DISCORD_CLIENT_SECRET"] ?: throw notFound("DISCORD_CLIENT_SECRET")
         DISCORD_API_BASE_URL =
-            dotenv["DISCORD_API_BASE_URL"] ?: throw Error("DISCORD_API_BASE_URL must be provided")
+            dotenv["DISCORD_API_BASE_URL"] ?: throw notFound("DISCORD_API_BASE_URL")
         DISCORD_MY_REDIRECT_URL =
-            dotenv["DISCORD_MY_REDIRECT_URL"] ?: throw Error("DISCORD_MY_REDIRECT_URL must be provided")
+            dotenv["DISCORD_MY_REDIRECT_URL"] ?: throw notFound("DISCORD_MY_REDIRECT_URL")
         DISCORD_REDIRECT_URL =
-            dotenv["DISCORD_REDIRECT_URL"] ?: throw Error("DISCORD_REDIRECT_URL must be provided")
-        DISCORD_GRANT_TYPE = dotenv["DISCORD_GRANT_TYPE"] ?: throw Error("DISCORD_GRANT_TYPE must be provided")
-        DISCORD_BOT_TOKEN = dotenv["DISCORD_BOT_TOKEN"] ?: throw Error("DISCORD_BOT_TOKEN must be provided")
-        DISCORD_GUILD_ID =
-            dotenv["DISCORD_GUILD_ID"]?.toLongOrNull() ?: throw Error("DISCORD_GUILD_ID must be provided")
+            dotenv["DISCORD_REDIRECT_URL"] ?: throw notFound("DISCORD_REDIRECT_URL")
+        DISCORD_GRANT_TYPE = dotenv["DISCORD_GRANT_TYPE"] ?: throw notFound("DISCORD_GRANT_TYPE")
+        DISCORD_BOT_TOKEN = dotenv["DISCORD_BOT_TOKEN"] ?: throw notFound("DISCORD_BOT_TOKEN")
+        DISCORD_GUILD_ID = dotenv["DISCORD_GUILD_ID"]?.toLongOrNull() ?: throw notFound("DISCORD_GUILD_ID")
         DISCORD_ROLE_EVERYONE_ID =
-            dotenv["DISCORD_ROLE_EVERYONE_ID"] ?: throw Error("DISCORD_ROLE_EVERYONE_ID must be provided")
+            dotenv["DISCORD_ROLE_EVERYONE_ID"] ?: throw notFound("DISCORD_ROLE_EVERYONE_ID")
 
 
-        JWT_SECRET = dotenv["JWT_SECRET"] ?: throw Error("JWT_SECRET must be provided")
+        JWT_SECRET = dotenv["JWT_SECRET"] ?: throw notFound("JWT_SECRET")
         JWT_EXPIRES_IN_MINUTES =
-            dotenv["JWT_EXPIRES_IN_MINUTES"]?.toLongOrNull() ?: throw Error("JWT_EXPIRES_IN_MINUTES must be provided")
+            dotenv["JWT_EXPIRES_IN_MINUTES"]?.toLongOrNull() ?: throw notFound("JWT_EXPIRES_IN_MINUTES")
 
-        DB_HOST = dotenv["DB_HOST"] ?: throw Error("DB_HOST must be provided")
-        DB_PORT = dotenv["DB_PORT"] ?: throw Error("DB_PORT must be provided")
-        DB_USER = dotenv["DB_USER"] ?: throw Error("DB_USER must be provided")
-        DB_PASSWORD = dotenv["DB_PASSWORD"] ?: throw Error("DB_PASSWORD must be provided")
-        DB_NAME = dotenv["DB_NAME"] ?: throw Error("DB_NAME must be provided")
+        DB_HOST = dotenv["DB_HOST"] ?: throw notFound("DB_HOST")
+        DB_PORT = dotenv["DB_PORT"] ?: throw notFound("DB_PORT")
+        DB_USER = dotenv["DB_USER"] ?: throw notFound("DB_USER")
+        DB_PASSWORD = dotenv["DB_PASSWORD"] ?: throw notFound("DB_PASSWORD")
+        DB_NAME = dotenv["DB_NAME"] ?: throw notFound("DB_NAME")
+    }
+
+    private fun notFound(variable: String): CustomException {
+        return CustomException(
+            statusCode = 500,
+            message = "Environment variable '$variable' was mot found"
+        )
     }
 }
