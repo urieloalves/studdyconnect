@@ -112,6 +112,14 @@ components:
           type: "string"
         courseLink:
           type: "string"
+    ErrorResponse:
+      type: "object"
+      properties:
+        status:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
     UserResponse:
       type: "object"
       properties:
