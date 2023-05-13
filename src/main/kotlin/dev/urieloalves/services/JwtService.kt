@@ -17,6 +17,7 @@ class JwtServiceImpl : JwtService {
 
     override fun generateToken(userId: String): String {
         try {
+            logger.info("Generating token for user '$userId'")
             return JWT.create()
                 .withClaim("id", userId)
                 .withExpiresAt(Instant.now().plusSeconds(Env.JWT_EXPIRES_IN_MINUTES * 60))
