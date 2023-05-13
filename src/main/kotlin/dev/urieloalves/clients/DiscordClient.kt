@@ -1,7 +1,7 @@
 package dev.urieloalves.clients
 
-import dev.urieloalves.clients.responses.GetAccessTokenResponse
-import dev.urieloalves.clients.responses.GetUserInfoResponse
+import dev.urieloalves.clients.responses.DiscordTokenResponse
+import dev.urieloalves.clients.responses.DiscordUserResponse
 import dev.urieloalves.configs.Env
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -17,7 +17,7 @@ import kotlinx.serialization.json.Json
 
 interface DiscordClient {
     suspend fun getAccessToken(code: String): String
-    suspend fun getUser(accessToken: String): GetUserInfoResponse
+    suspend fun getUser(accessToken: String): DiscordUserResponse
 }
 
 class DiscordClientImpl : DiscordClient {
@@ -39,16 +39,16 @@ class DiscordClientImpl : DiscordClient {
                 append("code", code)
                 append("redirect_uri", Env.DISCORD_MY_REDIRECT_URL)
             }
-        ).body<GetAccessTokenResponse>()
+        ).body<DiscordTokenResponse>()
 
         return data.accessToken
     }
 
-    override suspend fun getUser(accessToken: String): GetUserInfoResponse {
+    override suspend fun getUser(accessToken: String): DiscordUserResponse {
         return httpClient.get("${Env.DISCORD_API_BASE_URL}/users/@me") {
             headers {
                 append(HttpHeaders.Authorization, "Bearer $accessToken")
             }
-        }.body<GetUserInfoResponse>()
+        }.body<DiscordUserResponse>()
     }
 }

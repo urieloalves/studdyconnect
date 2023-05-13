@@ -1,7 +1,7 @@
 package dev.urieloalves.services
 
 import dev.urieloalves.clients.DiscordClient
-import dev.urieloalves.clients.responses.GetUserInfoResponse
+import dev.urieloalves.clients.responses.DiscordUserResponse
 import dev.urieloalves.data.dao.UserDao
 import dev.urieloalves.data.models.User
 import io.mockk.clearAllMocks
@@ -35,7 +35,7 @@ class OAuthServiceTest {
     @Test
     fun `should return a token and user`() {
         coEvery { discordClient.getAccessToken(any()) } returns "token"
-        coEvery { discordClient.getUser(any()) } returns GetUserInfoResponse(
+        coEvery { discordClient.getUser(any()) } returns DiscordUserResponse(
             id = "discord-id",
             username = "username",
             email = "username@email.com"
