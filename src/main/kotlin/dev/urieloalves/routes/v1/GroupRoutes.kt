@@ -7,7 +7,7 @@ import dev.urieloalves.data.dao.UserDaoImpl
 import dev.urieloalves.routes.v1.requests.CreateGroupRequest
 import dev.urieloalves.routes.v1.responses.GroupResponse
 import dev.urieloalves.services.DiscordServiceImpl
-import dev.urieloalves.services.GroupService
+import dev.urieloalves.services.GroupServiceImpl
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.auth.jwt.JWTPrincipal
@@ -21,7 +21,7 @@ import io.ktor.server.routing.route
 
 fun Route.groupRoutes() {
 
-    val groupService = GroupService(
+    val groupService = GroupServiceImpl(
         userDao = UserDaoImpl(),
         groupDao = GroupDaoImpl(),
         groupUserDao = GroupUserDaoImpl(),

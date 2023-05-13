@@ -6,14 +6,21 @@ import dev.urieloalves.data.dao.UserDao
 import dev.urieloalves.data.models.Group
 import dev.urieloalves.routes.v1.requests.CreateGroupRequest
 
-class GroupService(
+interface GroupService {
+    suspend fun createGroup(request: CreateGroupRequest, userId: String)
+    fun getGroups(userId: String): List<Group>
+    suspend fun joinGroup(groupId: String, userId: String)
+    suspend fun leaveGroup(groupId: String, userId: String)
+}
+
+class GroupServiceImpl(
     val userDao: UserDao,
     val groupDao: GroupDao,
     val groupUserDao: GroupUserDaoImpl,
     val discordService: DiscordService
-) {
+) : GroupService {
 
-    suspend fun createGroup(request: CreateGroupRequest, userId: String) {
+    override suspend fun createGroup(request: CreateGroupRequest, userId: String) {
         val user = userDao.getById(userId)
 
         val channelId = discordService.createChannel(
@@ -31,11 +38,11 @@ class GroupService(
         )
     }
 
-    fun getGroups(userId: String): List<Group> {
+    override fun getGroups(userId: String): List<Group> {
         return groupDao.getAllCreatedBy(userId)
     }
 
-    suspend fun joinGroup(groupId: String, userId: String) {
+    override suspend fun joinGroup(groupId: String, userId: String) {
         val user = userDao.getById(userId)
         val group = groupDao.getById(groupId)
         group?.let {
@@ -49,7 +56,7 @@ class GroupService(
         }
     }
 
-    suspend fun leaveGroup(groupId: String, userId: String) {
+    override suspend fun leaveGroup(groupId: String, userId: String) {
         val user = userDao.getById(userId)
         val group = groupDao.getById(groupId)
         group?.let {
