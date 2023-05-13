@@ -22,6 +22,7 @@ import io.ktor.server.auth.jwt.jwt
 import io.ktor.server.auth.principal
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.statuspages.StatusPages
@@ -58,6 +59,13 @@ fun Application.module() {
                     ErrorResponse(
                         status = cause.statusCode,
                         message = cause.message
+                    )
+                )
+
+                cause is BadRequestException -> call.respond(
+                    ErrorResponse(
+                        status = 400,
+                        message = cause.message.toString()
                     )
                 )
 
