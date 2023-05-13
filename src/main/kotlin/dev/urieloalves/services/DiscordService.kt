@@ -10,7 +10,7 @@ import dev.kord.rest.service.editRolePermission
 import dev.urieloalves.clients.DiscordClient
 import dev.urieloalves.clients.responses.DiscordUserResponse
 import dev.urieloalves.configs.Env
-import dev.urieloalves.data.models.errors.CustomException
+import dev.urieloalves.data.models.errors.DiscordException
 
 
 interface DiscordService {
@@ -30,8 +30,7 @@ class DiscordServiceImpl(
         try {
             return discordClient.getAccessToken(code)
         } catch (e: Exception) {
-            throw CustomException(
-                statusCode = 500,
+            throw DiscordException(
                 message = "Could not get discord access token",
                 cause = e
             )
@@ -42,8 +41,7 @@ class DiscordServiceImpl(
         try {
             return discordClient.getUser(accessToken)
         } catch (e: Exception) {
-            throw CustomException(
-                statusCode = 500,
+            throw DiscordException(
                 message = "Could not get discord user",
                 cause = e
             )
@@ -60,8 +58,7 @@ class DiscordServiceImpl(
                 token = token
             ) {}
         } catch (e: Exception) {
-            throw CustomException(
-                statusCode = 500,
+            throw DiscordException(
                 message = "Could not add discord user '$discordId' to StudyConnect server",
                 cause = e
             )
@@ -95,8 +92,7 @@ class DiscordServiceImpl(
 
             return channel.id.toString()
         } catch (e: Exception) {
-            throw CustomException(
-                statusCode = 500,
+            throw DiscordException(
                 message = "Could not create channel for discord user '$discordId'",
                 cause = e
             )
@@ -114,8 +110,7 @@ class DiscordServiceImpl(
                 allowed = Permissions(Permission.All)
             }
         } catch (e: Exception) {
-            throw CustomException(
-                statusCode = 500,
+            throw DiscordException(
                 message = "Could not add discord user '$discordId' to channel '$channelId'",
                 cause = e
             )
@@ -133,8 +128,7 @@ class DiscordServiceImpl(
                 denied = Permissions(Permission.All)
             }
         } catch (e: Exception) {
-            throw CustomException(
-                statusCode = 500,
+            throw DiscordException(
                 message = "Could not remove discord user `$discordId` from channel '$channelId'",
                 cause = e
             )
