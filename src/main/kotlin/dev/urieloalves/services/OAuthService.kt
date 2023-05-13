@@ -4,13 +4,17 @@ import dev.urieloalves.data.dao.UserDao
 import dev.urieloalves.routes.v1.responses.OAuthResponse
 import dev.urieloalves.routes.v1.responses.UserResponse
 
-class OAuthService(
+interface OAuthService {
+    suspend fun handleDiscordOAuthCallback(code: String): OAuthResponse
+}
+
+class OAuthServiceImpl(
     val userDao: UserDao,
     val discordService: DiscordService,
     val jwtService: JwtService
-) {
+) : OAuthService {
 
-    suspend fun handleDiscordOAuthCallback(code: String): OAuthResponse {
+    override suspend fun handleDiscordOAuthCallback(code: String): OAuthResponse {
         val discordToken = discordService.getAccessToken(code)
 
         val discordUser = discordService.getUser(discordToken)

@@ -22,7 +22,7 @@ class OAuthServiceTest {
     private val userDao = mockk<UserDao>()
     private val discordService = mockk<DiscordService>()
     private val jwtService = mockk<JwtService>()
-    private val oAuthService = OAuthService(
+    private val oAuthService = OAuthServiceImpl(
         userDao = userDao,
         discordService = discordService,
         jwtService = jwtService
