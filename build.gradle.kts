@@ -46,6 +46,7 @@ dependencies {
     implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-swagger:$ktor_version")
     implementation("io.ktor:ktor-server-openapi:$ktor_version")
+    implementation("io.ktor:ktor-server-status-pages:$ktor_version")
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
@@ -58,10 +59,11 @@ dependencies {
     implementation("org.postgresql:postgresql:$postgres_driver_version")
     implementation("org.flywaydb:flyway-core:$flyway_version")
     implementation("dev.kord:kord-core:$kord_version")
+    implementation("io.ktor:ktor-server-host-common-jvm:2.3.0")
+    implementation("io.ktor:ktor-server-status-pages-jvm:2.3.0")
 
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     testImplementation("io.mockk:mockk:${mockk_version}")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
-//    testImplementation("com.google.truth:truth:$truth_version")
 }

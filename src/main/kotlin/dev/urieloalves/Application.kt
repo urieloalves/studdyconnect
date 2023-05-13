@@ -5,11 +5,12 @@ import com.auth0.jwt.algorithms.Algorithm
 import dev.urieloalves.configs.DatabaseFactory
 import dev.urieloalves.configs.Env
 import dev.urieloalves.data.models.errors.ClientException
+import dev.urieloalves.data.models.errors.CustomException
 import dev.urieloalves.routes.v1.groupRoutes
 import dev.urieloalves.routes.v1.oAuthRoutes
+import dev.urieloalves.routes.v1.responses.ErrorResponse
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
@@ -23,6 +24,7 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
+import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.plugins.swagger.swaggerUI
 import io.ktor.server.response.respond
 import io.ktor.server.routing.route
@@ -49,6 +51,26 @@ fun Application.module() {
         json()
     }
 
+    install(StatusPages) {
+        exception<Throwable> { call, cause ->
+            when {
+                cause is CustomException -> call.respond(
+                    ErrorResponse(
+                        status = cause.statusCode,
+                        message = cause.message
+                    )
+                )
+
+                else -> call.respond(
+                    ErrorResponse(
+                        status = 500,
+                        message = "An unexpected error occurred"
+                    )
+                )
+            }
+        }
+    }
+
     install(Authentication) {
         jwt("auth-jwt") {
             verifier(
@@ -66,7 +88,12 @@ fun Application.module() {
             }
 
             challenge { _, _ ->
-                call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired")
+                call.respond(
+                    ErrorResponse(
+                        status = 401,
+                        message = "Token is not valid or has expired"
+                    )
+                )
             }
         }
     }
