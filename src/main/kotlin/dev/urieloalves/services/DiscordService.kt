@@ -24,6 +24,7 @@ interface DiscordService {
 class DiscordServiceImpl(
     val discordClient: DiscordClient
 ) : DiscordService {
+    
     override suspend fun getAccessToken(code: String): String {
         return discordClient.getAccessToken(code)
     }

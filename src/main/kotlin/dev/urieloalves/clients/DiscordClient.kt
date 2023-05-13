@@ -21,6 +21,7 @@ interface DiscordClient {
 }
 
 class DiscordClientImpl : DiscordClient {
+    
     private val httpClient = HttpClient(CIO) {
         install(ContentNegotiation) {
             json(Json {
