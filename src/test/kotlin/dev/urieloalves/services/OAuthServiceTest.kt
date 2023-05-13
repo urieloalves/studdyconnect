@@ -6,8 +6,12 @@ import dev.urieloalves.data.dao.UserDao
 import dev.urieloalves.data.models.User
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
+import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -27,6 +31,19 @@ class OAuthServiceTest {
         jwtService = jwtService
     )
 
+    private val discordUserResponse = DiscordUserResponse(
+        id = "discord-id",
+        username = "username",
+        email = "username@email.com"
+    )
+
+    private val user = User(
+        id = "user-id",
+        discordId = "discord-id",
+        username = "username",
+        email = "username@email.com"
+    )
+
     @AfterEach
     fun cleanup() {
         clearAllMocks()
@@ -34,25 +51,60 @@ class OAuthServiceTest {
 
     @Test
     fun `should return a token and user`() {
-        coEvery { discordClient.getAccessToken(any()) } returns "token"
-        coEvery { discordClient.getUser(any()) } returns DiscordUserResponse(
-            id = "discord-id",
-            username = "username",
-            email = "username@email.com"
-        )
-        every { userDao.getByDiscordId(any()) } returns User(
-            id = "id",
-            discordId = "discord-id",
-            username = "username",
-            email = "username@email.com"
-        )
-        every { jwtService.generateToken(any()) } returns "token"
+        coEvery { discordClient.getAccessToken(any()) } returns "discord-token"
+        coEvery { discordClient.getUser("discord-token") } returns discordUserResponse
+        every { userDao.getByDiscordId("discord-id") } returns user
+        every { jwtService.generateToken("user-id") } returns "token"
 
         runBlocking {
             val response = oAuthService.handleDiscordOAuthCallback("code")
 
             assertEquals(response.token, "token")
-            assertEquals(response.user.id, "id")
+            assertEquals(response.user.id, "user-id")
+            assertEquals(response.user.username, "username")
+            assertEquals(response.user.email, "username@email.com")
+        }
+    }
+
+    @Test
+    fun `should create user and join discord server if user is not registered`() {
+        coEvery { discordClient.getAccessToken(any()) } returns "discord-token"
+        coEvery { discordClient.getUser("discord-token") } returns discordUserResponse
+        every { userDao.getByDiscordId("discord-id") } returns null andThen user
+        every {
+            userDao.create(
+                discordId = "discord-id",
+                username = "username",
+                email = "username@email.com"
+            )
+        } just runs
+        coEvery {
+            discordService.joinServer(
+                discordId = "discord-id",
+                token = "discord-token"
+            )
+        } just runs
+        every { jwtService.generateToken("user-id") } returns "token"
+
+        runBlocking {
+            val response = oAuthService.handleDiscordOAuthCallback("code")
+
+            verify {
+                userDao.create(
+                    discordId = "discord-id",
+                    username = "username",
+                    email = "username@email.com"
+                )
+            }
+            coVerify {
+                discordService.joinServer(
+                    discordId = "discord-id",
+                    token = "discord-token"
+                )
+            }
+            verify { userDao.getByDiscordId("discord-id") }
+            assertEquals(response.token, "token")
+            assertEquals(response.user.id, "user-id")
             assertEquals(response.user.username, "username")
             assertEquals(response.user.email, "username@email.com")
         }

@@ -9,11 +9,21 @@ import dev.kord.rest.service.editMemberPermissions
 import dev.kord.rest.service.editRolePermission
 import dev.urieloalves.configs.Env
 
-class DiscordService {
 
-    suspend fun joinServer(discordId: String, token: String) {
+interface DiscordService {
+    suspend fun joinServer(discordId: String, token: String)
+    suspend fun createChannel(name: String, description: String, discordId: String): String
+
+    suspend fun joinChannel(channelId: String, discordId: String)
+
+    suspend fun leaveChannel(channelId: String, discordId: String)
+}
+
+class DiscordServiceImpl : DiscordService {
+
+    override suspend fun joinServer(discordId: String, token: String) {
         val kord = Kord(Env.DISCORD_BOT_TOKEN)
-        
+
         kord.rest.guild.addGuildMember(
             guildId = Snowflake(Env.DISCORD_GUILD_ID),
             userId = Snowflake(discordId),
@@ -21,7 +31,7 @@ class DiscordService {
         ) {}
     }
 
-    suspend fun createChannel(name: String, description: String, discordId: String): String {
+    override suspend fun createChannel(name: String, description: String, discordId: String): String {
         val kord = Kord(Env.DISCORD_BOT_TOKEN)
 
         val channel = kord.rest.guild.createTextChannel(
@@ -48,7 +58,7 @@ class DiscordService {
         return channel.id.toString()
     }
 
-    suspend fun joinChannel(channelId: String, discordId: String) {
+    override suspend fun joinChannel(channelId: String, discordId: String) {
         val kord = Kord(Env.DISCORD_BOT_TOKEN)
 
         kord.rest.channel.editMemberPermissions(
@@ -59,7 +69,7 @@ class DiscordService {
         }
     }
 
-    suspend fun leaveChannel(channelId: String, discordId: String) {
+    override suspend fun leaveChannel(channelId: String, discordId: String) {
         val kord = Kord(Env.DISCORD_BOT_TOKEN)
 
         kord.rest.channel.editMemberPermissions(

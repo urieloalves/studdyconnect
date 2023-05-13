@@ -3,7 +3,7 @@ package dev.urieloalves.routes.v1
 import dev.urieloalves.clients.DiscordClientImpl
 import dev.urieloalves.configs.Env
 import dev.urieloalves.data.dao.UserDaoImpl
-import dev.urieloalves.services.DiscordService
+import dev.urieloalves.services.DiscordServiceImpl
 import dev.urieloalves.services.JwtServiceImpl
 import dev.urieloalves.services.OAuthService
 import io.ktor.server.application.call
@@ -17,7 +17,7 @@ fun Route.oAuthRoutes() {
 
     val oAuthService = OAuthService(
         userDao = UserDaoImpl(),
-        discordService = DiscordService(),
+        discordService = DiscordServiceImpl(),
         discordClient = DiscordClientImpl(),
         jwtService = JwtServiceImpl()
     )
