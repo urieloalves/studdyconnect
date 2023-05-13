@@ -1,6 +1,6 @@
 POST http://localhost:3333/api/v1/groups
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBjODhmMjRiLTE0ZDMtNDNlNS1iYTk0LTNlZTRiMGU2MWVkZCIsImV4cCI6MTY4NDAwOTEzM30.iBvMbSS1n_f34D4fEgZAsjmNUvOFUrwzYsA1FCmO8kQ
+Authorization: Bearer {token}
 
 {
   "name": "Java Masterclass",
@@ -10,14 +10,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBjODhmMjRiL
 
 ###
 GET http://localhost:3333/api/v1/groups/search?text=java
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBjODhmMjRiLTE0ZDMtNDNlNS1iYTk0LTNlZTRiMGU2MWVkZCIsImV4cCI6MTY4NDAwOTEzM30.iBvMbSS1n_f34D4fEgZAsjmNUvOFUrwzYsA1FCmO8kQ
+Authorization: Bearer {token}
 
 ###
-POST http://localhost:3333/api/v1/groups/32/join
+POST http://localhost:3333/api/v1/groups/{id}/join
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBjODhmMjRiLTE0ZDMtNDNlNS1iYTk0LTNlZTRiMGU2MWVkZCIsImV4cCI6MTY4NDAwOTEzM30.iBvMbSS1n_f34D4fEgZAsjmNUvOFUrwzYsA1FCmO8kQ
+Authorization: Bearer {token}
 
 ###
-POST http://localhost:3333/api/v1/groups/12/leave
+POST http://localhost:3333/api/v1/groups/{id}/leave
 Content-Type: application/json
-Authorization: Bearer dsfd
+Authorization: Bearer {token}
