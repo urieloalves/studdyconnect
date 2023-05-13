@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import dev.urieloalves.configs.DatabaseFactory
 import dev.urieloalves.configs.Env
+import dev.urieloalves.data.models.errors.ClientException
 import dev.urieloalves.routes.v1.groupRoutes
 import dev.urieloalves.routes.v1.oAuthRoutes
 import io.ktor.http.HttpHeaders
@@ -83,7 +84,8 @@ fun Application.module() {
     }
 }
 
-fun ApplicationCall.getUserIdFromToken(): String? {
+fun ApplicationCall.getUserIdFromToken(): String {
     val principal = this.principal<JWTPrincipal>()
     return principal?.payload?.getClaim("id")?.asString()
+        ?: throw ClientException("Could not extract user id from JWT token")
 }

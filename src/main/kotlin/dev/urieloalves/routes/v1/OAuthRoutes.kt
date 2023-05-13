@@ -3,6 +3,7 @@ package dev.urieloalves.routes.v1
 import dev.urieloalves.clients.DiscordClientImpl
 import dev.urieloalves.configs.Env
 import dev.urieloalves.data.dao.UserDaoImpl
+import dev.urieloalves.data.models.errors.ServerException
 import dev.urieloalves.services.DiscordServiceImpl
 import dev.urieloalves.services.JwtServiceImpl
 import dev.urieloalves.services.OAuthServiceImpl
@@ -30,7 +31,8 @@ fun Route.oAuthRoutes() {
         }
 
         get("/discord/callback") {
-            val code = call.request.queryParameters["code"] ?: throw Error("Could not obtain code from discord")
+            val code = call.request.queryParameters["code"]
+                ?: throw ServerException("Could not obtain query parameter 'code' from discord")
             call.respond(
                 oAuthService.handleDiscordOAuthCallback(code)
             )

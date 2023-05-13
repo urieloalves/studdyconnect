@@ -3,6 +3,8 @@ package dev.urieloalves.routes.v1
 import dev.urieloalves.clients.DiscordClientImpl
 import dev.urieloalves.data.dao.GroupDaoImpl
 import dev.urieloalves.data.dao.UserDaoImpl
+import dev.urieloalves.data.models.errors.ClientException
+import dev.urieloalves.data.models.errors.ServerException
 import dev.urieloalves.getUserIdFromToken
 import dev.urieloalves.routes.v1.requests.CreateGroupRequest
 import dev.urieloalves.routes.v1.responses.GroupResponse
@@ -31,13 +33,13 @@ fun Route.groupRoutes() {
         post {
             groupService.createGroup(
                 request = call.receive<CreateGroupRequest>(),
-                userId = call.getUserIdFromToken()!!
+                userId = call.getUserIdFromToken()
             )
             call.response.status(HttpStatusCode.Created)
         }
 
         get {
-            val userId = call.getUserIdFromToken()!!
+            val userId = call.getUserIdFromToken()
             call.respond(
                 groupService.getGroups(userId).map {
                     GroupResponse(
@@ -52,7 +54,8 @@ fun Route.groupRoutes() {
         }
 
         get("/search") {
-            val text = call.request.queryParameters["text"] ?: ""
+            val text =
+                call.request.queryParameters["text"] ?: throw ClientException("Query parameter 'text' must be provided")
             call.respond(
                 groupService.searchGroups(text).map {
                     GroupResponse(
@@ -67,15 +70,15 @@ fun Route.groupRoutes() {
         }
 
         post("/{id}/join") {
-            val groupId = call.parameters["id"]!!
-            val userId = call.getUserIdFromToken()!!
+            val groupId = call.parameters["id"] ?: throw ServerException("Could not extract path parameter 'id'")
+            val userId = call.getUserIdFromToken()
             groupService.joinGroup(groupId, userId)
             call.response.status(HttpStatusCode.OK)
         }
 
         post("/{id}/leave") {
-            val groupId = call.parameters["id"]!!
-            val userId = call.getUserIdFromToken()!!
+            val groupId = call.parameters["id"] ?: throw ServerException("Could not extract path parameter 'id'")
+            val userId = call.getUserIdFromToken()
             groupService.leaveGroup(groupId, userId)
             call.response.status(HttpStatusCode.OK)
         }

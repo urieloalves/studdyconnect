@@ -117,7 +117,7 @@ class GroupServiceImpl(
 
     override fun searchGroups(text: String): List<Group> {
         try {
-            logger.info("Searching groups based with text '$text'")
+            logger.info("Searching groups with text '$text'")
             return groupDao.searchGroup(text)
         } catch (e: Exception) {
             val msg = "An error occurred when searching for groups with text '$text'"
