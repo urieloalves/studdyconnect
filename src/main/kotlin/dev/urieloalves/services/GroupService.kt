@@ -3,7 +3,12 @@ package dev.urieloalves.services
 import dev.urieloalves.data.dao.GroupDao
 import dev.urieloalves.data.dao.UserDao
 import dev.urieloalves.data.models.Group
+import dev.urieloalves.data.models.errors.ClientException
+import dev.urieloalves.data.models.errors.CustomException
+import dev.urieloalves.data.models.errors.ServerException
 import dev.urieloalves.routes.v1.requests.CreateGroupRequest
+import io.ktor.server.plugins.NotFoundException
+import org.slf4j.LoggerFactory
 
 interface GroupService {
     suspend fun createGroup(request: CreateGroupRequest, userId: String)
@@ -19,57 +24,96 @@ class GroupServiceImpl(
     val discordService: DiscordService
 ) : GroupService {
 
+    private val logger = LoggerFactory.getLogger("GroupServiceImpl")
+
     override suspend fun createGroup(request: CreateGroupRequest, userId: String) {
-        val user = userDao.getById(userId)
+        try {
+            val user = userDao.getById(userId) ?: throw NotFoundException("User '${userId}' not found")
 
-        val channelId = discordService.createChannel(
-            name = request.name,
-            description = request.description,
-            discordId = user!!.discordId
-        )
+            val channelId = discordService.createChannel(
+                name = request.name,
+                description = request.description,
+                discordId = user.discordId
+            )
 
-        groupDao.create(
-            name = request.name,
-            description = request.description,
-            courseLink = request.courseLink,
-            createdBy = user.id,
-            channelId = channelId
-        )
+            logger.info("Creating group for user '$userId'")
+            groupDao.create(
+                name = request.name,
+                description = request.description,
+                courseLink = request.courseLink,
+                createdBy = user.id,
+                channelId = channelId
+            )
+            logger.info("Group was successfully created by user '$userId'")
+        } catch (e: Exception) {
+            val msg = "Could not create group by '$userId'"
+            logger.error(msg, e)
+            when {
+                e is CustomException -> throw e
+                else -> throw ServerException(
+                    message = msg,
+                    cause = e
+                )
+            }
+        }
     }
 
     override fun getGroups(userId: String): List<Group> {
+        logger.info("Getting groups for user '$userId'")
         return groupDao.getAllCreatedBy(userId)
     }
 
     override suspend fun joinGroup(groupId: String, userId: String) {
-        val user = userDao.getById(userId)
-        val group = groupDao.getById(groupId)
-        group?.let {
-            if (it.createdBy != userId) {
-                val hasJoined = groupDao.hasUserJoinedGroup(userId = userId, groupId = groupId)
-                if (!hasJoined) {
-                    discordService.joinChannel(channelId = group.channelId, discordId = user!!.discordId)
-                    groupDao.joinGroup(userId = userId, groupId = groupId)
-                }
+        try {
+            val user = userDao.getById(userId) ?: throw NotFoundException("User '${userId}' not found")
+            val group = groupDao.getById(groupId) ?: throw NotFoundException("Group '${groupId}' not found")
+
+            if (group.createdBy == userId) throw ClientException("User '$userId' cannot join its own group '$groupId'")
+
+            val hasJoined = groupDao.hasUserJoinedGroup(userId = userId, groupId = groupId)
+            if (hasJoined) throw ClientException("User '$userId' already joined group '$groupId'")
+
+            discordService.joinChannel(channelId = group.channelId, discordId = user!!.discordId)
+            groupDao.joinGroup(userId = userId, groupId = groupId)
+            logger.info("User '$userId' was successfully added to group '$groupId'")
+        } catch (e: Exception) {
+            val msg = "User '$userId' cold not join group '$groupId'"
+            logger.error(msg, e)
+            when {
+                e is CustomException -> throw e
+                else -> throw ServerException(
+                    message = msg,
+                    cause = e
+                )
             }
         }
+
     }
 
     override suspend fun leaveGroup(groupId: String, userId: String) {
-        val user = userDao.getById(userId)
-        val group = groupDao.getById(groupId)
-        group?.let {
-            if (it.createdBy != userId) {
-                val hasJoined = groupDao.hasUserJoinedGroup(userId = userId, groupId = groupId)
-                if (hasJoined) {
-                    discordService.leaveChannel(channelId = group.channelId, discordId = user!!.discordId)
-                    groupDao.leaveGroup(userId = userId, groupId = groupId)
-                }
-            }
+        try {
+            val user = userDao.getById(userId) ?: throw NotFoundException("User '${userId}' not found")
+
+            val group = groupDao.getById(groupId) ?: throw NotFoundException("Group '${groupId}' not found")
+
+            if (group.createdBy == userId) throw ClientException("User '$userId' cannot be removed from its own group '$groupId'")
+
+            val hasJoined = groupDao.hasUserJoinedGroup(userId = userId, groupId = groupId)
+
+            if (!hasJoined) throw ClientException("User '$user' is not a member of group '$groupId'")
+
+            discordService.leaveChannel(channelId = group.channelId, discordId = user!!.discordId)
+            groupDao.leaveGroup(userId = userId, groupId = groupId)
+            logger.info("User '$userId' was successfully removed from group '$groupId'")
+        } catch (e: Exception) {
+            val msg = "User '$userId' could not be removed from group '$groupId'"
+            logger.error(msg, e)
+
         }
     }
 
     override fun searchGroups(text: String): List<Group> {
+        logger.info("Searching groups based on text '$text'")
         return groupDao.searchGroup(text)
     }
 }

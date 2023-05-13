@@ -2,8 +2,11 @@ package dev.urieloalves.configs
 
 import dev.urieloalves.data.models.errors.CustomException
 import io.github.cdimascio.dotenv.Dotenv
+import org.slf4j.LoggerFactory
 
 object Env {
+
+    private val logger = LoggerFactory.getLogger("Env")
 
     var PORT: Int
 
@@ -27,6 +30,7 @@ object Env {
     var DB_NAME: String
 
     init {
+        logger.info("Loading environment variables")
         val dotenv = Dotenv.configure().ignoreIfMissing().load()
 
         PORT = dotenv["PORT"]?.toIntOrNull() ?: 8080

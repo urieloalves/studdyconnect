@@ -47,7 +47,7 @@ class OAuthServiceImpl(
                 )
             )
         } catch (e: Exception) {
-
+            logger.info("An error occurred when handling discord oauth callback", e)
             throw e
         }
     }

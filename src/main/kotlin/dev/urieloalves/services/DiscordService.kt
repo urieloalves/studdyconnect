@@ -29,7 +29,6 @@ class DiscordServiceImpl(
 
     private val logger = LoggerFactory.getLogger("DiscordServiceImpl")
 
-
     override suspend fun getAccessToken(code: String): String {
         try {
             return discordClient.getAccessToken(code)
@@ -88,7 +87,7 @@ class DiscordServiceImpl(
                 topic = description
             }
 
-            logger.info("Hiding channel `${channel.id}` from everyone")
+            logger.info("Hiding discord channel `${channel.id}` from everyone")
             kord.rest.channel.editRolePermission(
                 channelId = channel.id,
                 roleId = Snowflake(Env.DISCORD_ROLE_EVERYONE_ID)
@@ -119,7 +118,7 @@ class DiscordServiceImpl(
         try {
             val kord = Kord(Env.DISCORD_BOT_TOKEN)
 
-            logger.info("Allowing discord user '$discordId' to use channel '$channelId'")
+            logger.info("Allowing discord user '$discordId' to use discord channel '$channelId'")
             kord.rest.channel.editMemberPermissions(
                 channelId = Snowflake(channelId),
                 memberId = Snowflake(discordId)
@@ -127,7 +126,7 @@ class DiscordServiceImpl(
                 allowed = Permissions(Permission.All)
             }
         } catch (e: Exception) {
-            val msg = "Could not add discord user '$discordId' to channel '$channelId'"
+            val msg = "Could not add discord user '$discordId' to discord channel '$channelId'"
             logger.error(msg, e)
             throw DiscordException(
                 message = msg,
