@@ -12,13 +12,13 @@ class Group (val id: UUID, val name: String, val description: String, val create
 
     private fun validateName() {
         if(name.isEmpty()) {
-            throw Exception("'name' must not be empty")
+            throw Exception("Name must not be empty")
         }
     }
 
     private fun validateDescription() {
         if(description.isEmpty()) {
-            throw Exception("'description' must not be empty")
+            throw Exception("Description must not be empty")
         }
     }
 }

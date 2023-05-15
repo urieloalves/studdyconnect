@@ -9,16 +9,16 @@ class DiscordUser(val id: String, val username: String) {
 
     private fun validateId() {
         if (id.isEmpty()) {
-            throw Exception("'id' must not be empty")
+            throw Exception("Id must not be empty")
         }
         if(id.toLongOrNull() == null) {
-            throw Exception("'id' cannot be parsed to long")
+            throw Exception("Id '$id' cannot be parsed to long")
         }
     }
 
     private fun validateUsername() {
         if (username.isEmpty()) {
-            throw Exception("'username' must not be empty")
+            throw Exception("Username must not be empty")
         }
     }
 }
