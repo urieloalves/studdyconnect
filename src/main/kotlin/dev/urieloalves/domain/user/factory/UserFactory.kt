@@ -6,9 +6,9 @@ import java.util.UUID
 
 object UserFactory {
 
-    fun create(id: UUID, email: String, discordId: String, discordUsername: String): User {
+    fun create(email: String, discordId: String, discordUsername: String): User {
         return User(
-            id = id,
+            id = UUID.randomUUID(),
             email = email,
             discordUser = DiscordUser(
                 id=discordId,
