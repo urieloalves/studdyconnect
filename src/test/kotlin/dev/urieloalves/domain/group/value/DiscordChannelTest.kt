@@ -25,4 +25,13 @@ class DiscordChannelTest {
             )
         }
     }
+
+    @Test
+    fun `should throw if id cannot be parsed to long`() {
+        assertThrows<Exception> {
+            DiscordChannel(
+                id = "not-long"
+            )
+        }
+    }
 }

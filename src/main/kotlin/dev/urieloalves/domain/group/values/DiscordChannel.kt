@@ -10,5 +10,8 @@ class DiscordChannel(val id: String) {
         if(id.isEmpty()) {
             throw Exception("'id' must not be empty")
         }
+        if(id.toLongOrNull() == null) {
+            throw Exception("'id' cannot be parsed to long")
+        }
     }
 }
