@@ -20,7 +20,7 @@ class GenerateTokenUseCase(
         try {
             logger.info("Generating token for user '${input.userId}'")
             val token = JWT.create()
-                .withClaim("id", input.userId)
+                .withClaim("id", input.userId.toString())
                 .withExpiresAt(Instant.now().plusSeconds(expiresInMinutes * 60))
                 .sign(Algorithm.HMAC256(jwtSecret))
             return OutputGenerateTokenUseCaseDto(
