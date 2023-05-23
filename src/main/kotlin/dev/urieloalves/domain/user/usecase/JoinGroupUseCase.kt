@@ -4,6 +4,7 @@ import dev.urieloalves.domain.group.repository.GroupRepository
 import dev.urieloalves.domain.user.repository.UserRepository
 import dev.urieloalves.domain.user.usecase.dto.InputJoinGroupUseCaseDto
 import dev.urieloalves.infrastructure.discord.DiscordClient
+import dev.urieloalves.infrastructure.discord.dto.InputJoinChannelDto
 import dev.urieloalves.infrastructure.shared.errors.ClientException
 import dev.urieloalves.infrastructure.shared.errors.CustomException
 import dev.urieloalves.infrastructure.shared.errors.ServerException
@@ -30,7 +31,12 @@ class JoinGroupUseCase(
             val hasJoined = groupRepository.hasUserJoinedGroup(userId = input.userId, groupId = input.groupId)
             if (hasJoined) throw ClientException("User '${input.userId}' already joined group '${input.groupId}'")
 
-            discordClient.joinChannel(channelId = group.discordChannel.id, discordId = user.discordUser.id)
+            discordClient.joinChannel(
+                InputJoinChannelDto(
+                    channelId = group.discordChannel.id,
+                    discordUserId = user.discordUser.id
+                )
+            )
             groupRepository.joinGroup(userId = input.userId, groupId = input.groupId)
             logger.info("User '${input.userId}' was successfully added to group '${input.groupId}'")
         } catch (e: Exception) {

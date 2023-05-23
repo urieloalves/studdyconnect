@@ -6,6 +6,9 @@ import dev.urieloalves.domain.user.usecase.dto.InputGenerateTokenUseCaseDto
 import dev.urieloalves.domain.user.usecase.dto.InputHandleOauthUseCaseDto
 import dev.urieloalves.domain.user.usecase.dto.OutputHandleOauthUseCaseDto
 import dev.urieloalves.infrastructure.discord.DiscordClient
+import dev.urieloalves.infrastructure.discord.dto.InputGetAccessTokenDto
+import dev.urieloalves.infrastructure.discord.dto.InputGetUserDto
+import dev.urieloalves.infrastructure.discord.dto.InputJoinServerDto
 import dev.urieloalves.infrastructure.shared.errors.CustomException
 import dev.urieloalves.infrastructure.shared.errors.ServerException
 import io.ktor.server.plugins.NotFoundException
@@ -21,27 +24,40 @@ class HandleOAuthUseCase(
 
     suspend fun execute(input: InputHandleOauthUseCaseDto): OutputHandleOauthUseCaseDto {
         try {
-            val discordToken = discordClient.getAccessToken(input.code)
+            val getAccessTokenOutput = discordClient.getAccessToken(
+                InputGetAccessTokenDto(
+                    code = input.code
+                )
+            )
             logger.info("Discord authentication token was retrieved successfully")
 
-            val discordUser = discordClient.getUser(discordToken)
+            val getUserOutput = discordClient.getUser(
+                InputGetUserDto(
+                    token = getAccessTokenOutput.accessToken
+                )
+            )
             logger.info("Discord user information was retrieved successfully")
 
-            var existentUser = userRepository.findByDiscordId(discordUser.id)
+            var existentUser = userRepository.findByDiscordId(getUserOutput.id)
 
             if (existentUser != null) {
                 logger.info("User '${existentUser.id}' is already registered - a JWT token will be generated")
             } else {
-                logger.info("Discord user '${discordUser.id}' with email '$${discordUser.email}' is not registered. C")
+                logger.info("Discord user '${getUserOutput.id}' with email '$${getUserOutput.email}' is not registered. C")
                 val user = UserFactory.create(
-                    email = discordUser.email,
-                    discordId = discordUser.id,
-                    discordUsername = discordUser.username
+                    email = getUserOutput.email,
+                    discordId = getUserOutput.id,
+                    discordUsername = getUserOutput.username
                 )
                 userRepository.create(user)
-                logger.info("User was created for discord user '${discordUser.id}'")
-                existentUser = userRepository.findByDiscordId(discordUser.id) ?: throw NotFoundException("Could not")
-                discordClient.joinServer(discordId = discordUser.id, token = discordToken)
+                logger.info("User was created for discord user '${getUserOutput.id}'")
+                existentUser = userRepository.findByDiscordId(getUserOutput.id) ?: throw NotFoundException("Could not")
+                discordClient.joinServer(
+                    InputJoinServerDto(
+                        discordUserId = getUserOutput.id,
+                        token = getAccessTokenOutput.accessToken
+                    )
+                )
             }
 
             val tokenOutput = generateTokenUseCase.execute(

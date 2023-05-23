@@ -5,6 +5,7 @@ import dev.urieloalves.domain.group.repository.GroupRepository
 import dev.urieloalves.domain.group.usecase.dto.InputCreateGroupUseCaseDto
 import dev.urieloalves.domain.user.repository.UserRepository
 import dev.urieloalves.infrastructure.discord.DiscordClient
+import dev.urieloalves.infrastructure.discord.dto.InputCreateChannelDto
 import dev.urieloalves.infrastructure.shared.errors.CustomException
 import dev.urieloalves.infrastructure.shared.errors.ServerException
 import io.ktor.server.plugins.NotFoundException
@@ -23,10 +24,12 @@ class CreateGroupUseCase(
             val user =
                 userRepository.findById(input.userId) ?: throw NotFoundException("User '${input.userId}' not found")
 
-            val channelId = discordClient.createChannel(
-                name = input.groupName,
-                description = input.groupDescription,
-                discordId = user.discordUser.id
+            val createChannelOutput = discordClient.createChannel(
+                InputCreateChannelDto(
+                    name = input.groupName,
+                    description = input.groupDescription,
+                    discordUserId = user.discordUser.id
+                )
             )
 
             logger.info("Creating group for user '${input.userId}'")
@@ -36,7 +39,7 @@ class CreateGroupUseCase(
                     description = input.groupDescription,
                     courseLink = input.courseLink,
                     createdBy = user.id,
-                    discordChannelId = channelId
+                    discordChannelId = createChannelOutput.channelId
                 )
             )
             logger.info("Group was successfully created by user '${input.userId}'")

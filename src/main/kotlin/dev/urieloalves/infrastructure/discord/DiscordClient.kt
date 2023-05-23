@@ -7,8 +7,15 @@ import dev.kord.core.Kord
 import dev.kord.rest.service.createTextChannel
 import dev.kord.rest.service.editMemberPermissions
 import dev.kord.rest.service.editRolePermission
-import dev.urieloalves.infrastructure.discord.responses.DiscordTokenResponse
-import dev.urieloalves.infrastructure.discord.responses.DiscordUserResponse
+import dev.urieloalves.infrastructure.discord.dto.InputCreateChannelDto
+import dev.urieloalves.infrastructure.discord.dto.InputGetAccessTokenDto
+import dev.urieloalves.infrastructure.discord.dto.InputGetUserDto
+import dev.urieloalves.infrastructure.discord.dto.InputJoinChannelDto
+import dev.urieloalves.infrastructure.discord.dto.InputJoinServerDto
+import dev.urieloalves.infrastructure.discord.dto.InputLeaveChannelDto
+import dev.urieloalves.infrastructure.discord.dto.OutputCreateChannelDto
+import dev.urieloalves.infrastructure.discord.dto.OutputGetAccessTokenDto
+import dev.urieloalves.infrastructure.discord.dto.OutputGetUserDto
 import dev.urieloalves.infrastructure.shared.Env
 import dev.urieloalves.infrastructure.shared.errors.DiscordException
 import io.ktor.client.HttpClient
@@ -25,12 +32,12 @@ import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
 
 interface DiscordClient {
-    suspend fun getAccessToken(code: String): String
-    suspend fun getUser(accessToken: String): DiscordUserResponse
-    suspend fun joinServer(discordId: String, token: String)
-    suspend fun createChannel(name: String, description: String, discordId: String): String
-    suspend fun joinChannel(channelId: String, discordId: String)
-    suspend fun leaveChannel(channelId: String, discordId: String)
+    suspend fun getAccessToken(input: InputGetAccessTokenDto): OutputGetAccessTokenDto
+    suspend fun getUser(input: InputGetUserDto): OutputGetUserDto
+    suspend fun joinServer(input: InputJoinServerDto)
+    suspend fun createChannel(input: InputCreateChannelDto): OutputCreateChannelDto
+    suspend fun joinChannel(input: InputJoinChannelDto)
+    suspend fun leaveChannel(input: InputLeaveChannelDto)
 }
 
 class DiscordClientImpl : DiscordClient {
@@ -51,59 +58,57 @@ class DiscordClientImpl : DiscordClient {
 
     private val discordRoleEveryoneId = Env.DISCORD_ROLE_EVERYONE_ID
 
-    override suspend fun getAccessToken(code: String): String {
-        val data = httpClient.submitForm(
+    override suspend fun getAccessToken(input: InputGetAccessTokenDto): OutputGetAccessTokenDto {
+        return httpClient.submitForm(
             url = "${Env.DISCORD_API_BASE_URL}/oauth2/token",
             formParameters = parameters {
                 append("client_id", Env.DISCORD_CLIENT_ID)
                 append("client_secret", Env.DISCORD_CLIENT_SECRET)
                 append("grant_type", Env.DISCORD_GRANT_TYPE)
-                append("code", code)
+                append("code", input.code)
                 append("redirect_uri", Env.DISCORD_MY_REDIRECT_URL)
             }
-        ).body<DiscordTokenResponse>()
-
-        return data.accessToken
+        ).body<OutputGetAccessTokenDto>()
     }
 
-    override suspend fun getUser(accessToken: String): DiscordUserResponse {
+    override suspend fun getUser(input: InputGetUserDto): OutputGetUserDto {
         return httpClient.get("${Env.DISCORD_API_BASE_URL}/users/@me") {
             headers {
-                append(HttpHeaders.Authorization, "Bearer $accessToken")
+                append(HttpHeaders.Authorization, "Bearer ${input.token}")
             }
-        }.body<DiscordUserResponse>()
+        }.body<OutputGetUserDto>()
     }
 
-    override suspend fun joinServer(discordId: String, token: String) {
+    override suspend fun joinServer(input: InputJoinServerDto) {
         try {
             val kord = Kord(discordBotToken)
 
-            logger.info("Adding discord user '$discordId' to StudyConnect discord server")
+            logger.info("Adding discord user '${input.discordUserId}' to StudyConnect discord server")
             kord.rest.guild.addGuildMember(
                 guildId = Snowflake(discordGuildId),
-                userId = Snowflake(discordId),
-                token = token
+                userId = Snowflake(input.discordUserId),
+                token = input.token
             ) {}
-            logger.info("Discord user '$discordId' was successfully added to StudyConnect discord server")
+            logger.info("Discord user '${input.discordUserId}' was successfully added to StudyConnect discord server")
         } catch (e: Exception) {
-            val msg = "Could not add discord user '$discordId' to StudyConnect server"
+            val msg = "Could not add discord user '${input.discordUserId}' to StudyConnect server"
             logger.error(msg, e)
             throw DiscordException(msg, e)
         }
     }
 
-    override suspend fun createChannel(name: String, description: String, discordId: String): String {
+    override suspend fun createChannel(input: InputCreateChannelDto): OutputCreateChannelDto {
         try {
             val kord = Kord(discordBotToken)
 
-            logger.info("Creating discord channel by discord user '$discordId'")
+            logger.info("Creating discord channel by discord user '${input.discordUserId}'")
             val channel = kord.rest.guild.createTextChannel(
                 guildId = Snowflake(discordGuildId),
-                name = name
+                name = input.name
             ) {
-                topic = description
+                topic = input.description
             }
-            logger.info("Discord channel '${channel.id}' was successfully created by discord user '$discordId'")
+            logger.info("Discord channel '${channel.id}' was successfully created by discord user '${input.discordUserId}'")
 
             logger.info("Hiding discord channel `${channel.id}` from everyone")
             kord.rest.channel.editRolePermission(
@@ -114,56 +119,58 @@ class DiscordClientImpl : DiscordClient {
             }
             logger.info("Discord channel was successfully hidden from everyone")
 
-            logger.info("Allowing discord user '$discordId' to use discord channel `${channel.id}`")
+            logger.info("Allowing discord user '${input.discordUserId}' to use discord channel `${channel.id}`")
             kord.rest.channel.editMemberPermissions(
                 channelId = channel.id,
-                memberId = Snowflake(discordId)
+                memberId = Snowflake(input.discordUserId)
             ) {
                 allowed = Permissions(Permission.All)
             }
-            logger.info("Discord user '$discordId' is now allowed to use discord channel '${channel.id}'")
+            logger.info("Discord user '${input.discordUserId}' is now allowed to use discord channel '${channel.id}'")
 
-            return channel.id.toString()
+            return OutputCreateChannelDto(
+                channelId = channel.id.toString()
+            )
         } catch (e: Exception) {
-            val msg = "Could not create channel for discord user '$discordId'"
+            val msg = "Could not create channel for discord user '${input.discordUserId}'"
             logger.error(msg, e)
             throw DiscordException(msg, e)
         }
     }
 
-    override suspend fun joinChannel(channelId: String, discordId: String) {
+    override suspend fun joinChannel(input: InputJoinChannelDto) {
         try {
             val kord = Kord(discordBotToken)
 
-            logger.info("Allowing discord user '$discordId' to use discord channel '$channelId'")
+            logger.info("Allowing discord user '${input.discordUserId}' to use discord channel '${input.channelId}'")
             kord.rest.channel.editMemberPermissions(
-                channelId = Snowflake(channelId),
-                memberId = Snowflake(discordId)
+                channelId = Snowflake(input.channelId),
+                memberId = Snowflake(input.discordUserId)
             ) {
                 allowed = Permissions(Permission.All)
             }
-            logger.info("Discord user '$discordId' is now allowed to use discord channel '$discordId'")
+            logger.info("Discord user '${input.discordUserId}' is now allowed to use discord channel '${input.channelId}'")
         } catch (e: Exception) {
-            val msg = "Could not add discord user '$discordId' to discord channel '$channelId'"
+            val msg = "Could not add discord user '${input.discordUserId}' to discord channel '${input.channelId}'"
             logger.error(msg, e)
             throw DiscordException(msg, e)
         }
     }
 
-    override suspend fun leaveChannel(channelId: String, discordId: String) {
+    override suspend fun leaveChannel(input: InputLeaveChannelDto) {
         try {
             val kord = Kord(discordBotToken)
 
-            logger.info("Hiding channel '$channelId' from discord user '$discordId'")
+            logger.info("Hiding channel '${input.channelId}' from discord user '${input.discordUserId}'")
             kord.rest.channel.editMemberPermissions(
-                channelId = Snowflake(channelId),
-                memberId = Snowflake(discordId)
+                channelId = Snowflake(input.channelId),
+                memberId = Snowflake(input.discordUserId)
             ) {
                 denied = Permissions(Permission.All)
             }
-            logger.info("Discord channel '$channelId' was successfully hidden from discord user '$discordId'")
+            logger.info("Discord channel '${input.channelId}' was successfully hidden from discord user '${input.discordUserId}'")
         } catch (e: Exception) {
-            val msg = "Could not remove discord user `$discordId` from channel '$channelId'"
+            val msg = "Could not remove discord user `${input.discordUserId}` from channel '${input.channelId}'"
             logger.error(msg, e)
             throw DiscordException(msg, e)
         }

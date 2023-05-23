@@ -4,6 +4,7 @@ import dev.urieloalves.domain.group.repository.GroupRepository
 import dev.urieloalves.domain.user.repository.UserRepository
 import dev.urieloalves.domain.user.usecase.dto.InputLeaveGroupUseCaseDto
 import dev.urieloalves.infrastructure.discord.DiscordClient
+import dev.urieloalves.infrastructure.discord.dto.InputLeaveChannelDto
 import dev.urieloalves.infrastructure.shared.errors.ClientException
 import dev.urieloalves.infrastructure.shared.errors.CustomException
 import dev.urieloalves.infrastructure.shared.errors.ServerException
@@ -32,7 +33,12 @@ class LeaveGroupUseCase(
 
             if (!hasJoined) throw ClientException("User '$user' is not a member of group '${input.groupId}'")
 
-            discordClient.leaveChannel(channelId = group.discordChannel.id, discordId = user.discordUser.id)
+            discordClient.leaveChannel(
+                InputLeaveChannelDto(
+                    channelId = group.discordChannel.id,
+                    discordUserId = user.discordUser.id
+                )
+            )
             groupRepository.leaveGroup(userId = input.userId, groupId = input.groupId)
             logger.info("User '${input.userId}' was successfully removed from group '${input.groupId}'")
         } catch (e: Exception) {
