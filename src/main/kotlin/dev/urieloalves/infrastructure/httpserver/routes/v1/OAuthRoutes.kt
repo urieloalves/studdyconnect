@@ -1,4 +1,4 @@
-package dev.urieloalves.infrastructure.httpserver.v1.routes
+package dev.urieloalves.infrastructure.httpserver.routes.v1
 
 import io.ktor.server.routing.Route
 

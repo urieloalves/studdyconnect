@@ -2,9 +2,9 @@ package dev.urieloalves.infrastructure.httpserver
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import dev.urieloalves.infrastructure.httpserver.v1.routes.groupRoutes
-import dev.urieloalves.infrastructure.httpserver.v1.routes.oAuthRoutes
-import dev.urieloalves.infrastructure.httpserver.v1.routes.responses.ErrorResponse
+import dev.urieloalves.infrastructure.httpserver.routes.v1.groupRoutes
+import dev.urieloalves.infrastructure.httpserver.routes.v1.oAuthRoutes
+import dev.urieloalves.infrastructure.httpserver.routes.v1.responses.ErrorResponse
 import dev.urieloalves.infrastructure.shared.Env
 import dev.urieloalves.infrastructure.shared.errors.ClientException
 import dev.urieloalves.infrastructure.shared.errors.CustomException
