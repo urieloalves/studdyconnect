@@ -1,6 +1,5 @@
-package dev.urieloalves.domain.user.value
+package dev.urieloalves.domain.user.valueobject
 
-import dev.urieloalves.domain.user.entity.User
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
@@ -13,7 +12,7 @@ class DiscordUserTest {
     @Test
     fun `should create discord user value-object`() {
         val discordUser = DiscordUser(
-            id="1",
+            id = "1",
             username = "discord-username"
         )
 
@@ -25,7 +24,7 @@ class DiscordUserTest {
     fun `should throw if id is empty`() {
         assertThrows<Exception> {
             DiscordUser(
-                id="",
+                id = "",
                 username = "discord-username"
             )
         }
@@ -35,7 +34,7 @@ class DiscordUserTest {
     fun `should throw if id cannot be parsed to long`() {
         assertThrows<Exception> {
             DiscordUser(
-                id="not-long",
+                id = "not-long",
                 username = "discord-username"
             )
         }
@@ -45,7 +44,7 @@ class DiscordUserTest {
     fun `should throw if username is empty`() {
         assertThrows<Exception> {
             DiscordUser(
-                id="1",
+                id = "1",
                 username = ""
             )
         }

@@ -1,7 +1,7 @@
 package dev.urieloalves.domain.group.factory
 
 import dev.urieloalves.domain.group.entity.Group
-import dev.urieloalves.domain.group.values.DiscordChannel
+import dev.urieloalves.domain.group.valueobject.DiscordChannel
 import java.util.UUID
 
 object GroupFactory {

@@ -1,6 +1,6 @@
 package dev.urieloalves.domain.group.entity
 
-import dev.urieloalves.domain.group.values.DiscordChannel
+import dev.urieloalves.domain.group.valueobject.DiscordChannel
 import java.util.UUID
 
 class Group(

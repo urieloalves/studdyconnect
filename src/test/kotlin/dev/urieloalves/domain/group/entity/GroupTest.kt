@@ -1,8 +1,6 @@
 package dev.urieloalves.domain.group.entity
 
-import dev.urieloalves.domain.group.values.DiscordChannel
-import dev.urieloalves.domain.user.entity.User
-import dev.urieloalves.domain.user.value.DiscordUser
+import dev.urieloalves.domain.group.valueobject.DiscordChannel
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
@@ -14,15 +12,15 @@ class GroupTest {
 
     @Test
     fun `should create group entity`() {
-        val id  = UUID.randomUUID()
-        val createdBy  = UUID.randomUUID()
+        val id = UUID.randomUUID()
+        val createdBy = UUID.randomUUID()
         val group = Group(
             id = id,
             name = "group-name",
             description = "group-description",
             createdBy = createdBy,
             discordChannel = DiscordChannel(
-                id="1"
+                id = "1"
             )
         )
 
@@ -42,7 +40,7 @@ class GroupTest {
                 description = "group-description",
                 createdBy = UUID.randomUUID(),
                 discordChannel = DiscordChannel(
-                    id="1"
+                    id = "1"
                 )
             )
         }
@@ -57,7 +55,7 @@ class GroupTest {
                 description = "",
                 createdBy = UUID.randomUUID(),
                 discordChannel = DiscordChannel(
-                    id="1"
+                    id = "1"
                 )
             )
         }

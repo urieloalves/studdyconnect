@@ -1,7 +1,6 @@
 package dev.urieloalves.domain.user.entity
 
-import dev.urieloalves.domain.user.entity.User
-import dev.urieloalves.domain.user.value.DiscordUser
+import dev.urieloalves.domain.user.valueobject.DiscordUser
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
@@ -13,12 +12,12 @@ class UserTest {
 
     @Test
     fun `should create user entity`() {
-        val id  = UUID.randomUUID()
+        val id = UUID.randomUUID()
         val user = User(
             id = id,
             email = "user@email.com",
             discordUser = DiscordUser(
-                id="1",
+                id = "1",
                 username = "discord-username"
             )
         )
@@ -36,7 +35,7 @@ class UserTest {
                 id = UUID.randomUUID(),
                 email = "",
                 discordUser = DiscordUser(
-                    id="1",
+                    id = "1",
                     username = "discord-username"
                 )
             )
@@ -50,7 +49,7 @@ class UserTest {
                 id = UUID.randomUUID(),
                 email = "incorrect-email",
                 discordUser = DiscordUser(
-                    id="1",
+                    id = "1",
                     username = "discord-username"
                 )
             )

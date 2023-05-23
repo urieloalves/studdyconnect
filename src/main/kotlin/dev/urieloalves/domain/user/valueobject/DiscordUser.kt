@@ -1,4 +1,4 @@
-package dev.urieloalves.domain.user.value
+package dev.urieloalves.domain.user.valueobject
 
 class DiscordUser(val id: String, val username: String) {
 
@@ -11,7 +11,7 @@ class DiscordUser(val id: String, val username: String) {
         if (id.isEmpty()) {
             throw Exception("Id must not be empty")
         }
-        if(id.toLongOrNull() == null) {
+        if (id.toLongOrNull() == null) {
             throw Exception("Id '$id' cannot be parsed to long")
         }
     }
