@@ -1,9 +1,9 @@
 package dev.urieloalves.domain.group.usecase
 
-import dev.urieloalves.data.models.errors.ServerException
 import dev.urieloalves.domain.group.repository.GroupRepository
 import dev.urieloalves.domain.group.usecase.dto.InputGetGroupsByUserUseCaseDto
 import dev.urieloalves.domain.group.usecase.dto.OutputGetGroupsByUserUseCaseDto
+import dev.urieloalves.infrastructure.shared.errors.ServerException
 import org.slf4j.LoggerFactory
 
 class GetGroupsByUserUseCase(

@@ -1,8 +1,8 @@
 package dev.urieloalves.services
 
-import dev.urieloalves.clients.responses.DiscordUserResponse
 import dev.urieloalves.data.dao.UserDao
 import dev.urieloalves.data.models.User
+import dev.urieloalves.infrastructure.discord.responses.DiscordUserResponse
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify

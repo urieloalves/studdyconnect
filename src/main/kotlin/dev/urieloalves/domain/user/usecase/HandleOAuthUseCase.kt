@@ -1,13 +1,13 @@
 package dev.urieloalves.domain.user.usecase
 
-import dev.urieloalves.clients.DiscordClient
-import dev.urieloalves.data.models.errors.CustomException
-import dev.urieloalves.data.models.errors.ServerException
 import dev.urieloalves.domain.user.factory.UserFactory
 import dev.urieloalves.domain.user.repository.UserRepository
 import dev.urieloalves.domain.user.usecase.dto.InputGenerateTokenUseCaseDto
 import dev.urieloalves.domain.user.usecase.dto.InputHandleOauthUseCaseDto
 import dev.urieloalves.domain.user.usecase.dto.OutputHandleOauthUseCaseDto
+import dev.urieloalves.infrastructure.discord.DiscordClient
+import dev.urieloalves.infrastructure.shared.errors.CustomException
+import dev.urieloalves.infrastructure.shared.errors.ServerException
 import io.ktor.server.plugins.NotFoundException
 import org.slf4j.LoggerFactory
 

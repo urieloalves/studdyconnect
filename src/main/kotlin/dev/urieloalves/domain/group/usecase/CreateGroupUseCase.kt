@@ -1,12 +1,12 @@
 package dev.urieloalves.domain.group.usecase
 
-import dev.urieloalves.clients.DiscordClient
-import dev.urieloalves.data.models.errors.CustomException
-import dev.urieloalves.data.models.errors.ServerException
 import dev.urieloalves.domain.group.factory.GroupFactory
 import dev.urieloalves.domain.group.repository.GroupRepository
 import dev.urieloalves.domain.group.usecase.dto.InputCreateGroupUseCaseDto
 import dev.urieloalves.domain.user.repository.UserRepository
+import dev.urieloalves.infrastructure.discord.DiscordClient
+import dev.urieloalves.infrastructure.shared.errors.CustomException
+import dev.urieloalves.infrastructure.shared.errors.ServerException
 import io.ktor.server.plugins.NotFoundException
 import org.slf4j.LoggerFactory
 

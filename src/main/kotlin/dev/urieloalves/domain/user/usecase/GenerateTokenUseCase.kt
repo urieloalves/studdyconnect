@@ -2,10 +2,10 @@ package dev.urieloalves.domain.user.usecase
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import dev.urieloalves.configs.Env
-import dev.urieloalves.data.models.errors.ServerException
 import dev.urieloalves.domain.user.usecase.dto.InputGenerateTokenUseCaseDto
 import dev.urieloalves.domain.user.usecase.dto.OutputGenerateTokenUseCaseDto
+import dev.urieloalves.infrastructure.shared.Env
+import dev.urieloalves.infrastructure.shared.errors.ServerException
 import org.slf4j.LoggerFactory
 import java.time.Instant
 

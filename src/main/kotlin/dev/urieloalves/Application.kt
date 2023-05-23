@@ -2,13 +2,13 @@ package dev.urieloalves
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import dev.urieloalves.configs.DatabaseFactory
-import dev.urieloalves.configs.Env
-import dev.urieloalves.data.models.errors.ClientException
-import dev.urieloalves.data.models.errors.CustomException
-import dev.urieloalves.routes.v1.groupRoutes
-import dev.urieloalves.routes.v1.oAuthRoutes
-import dev.urieloalves.routes.v1.responses.ErrorResponse
+import dev.urieloalves.infrastructure.server.v1.routes.groupRoutes
+import dev.urieloalves.infrastructure.server.v1.routes.oAuthRoutes
+import dev.urieloalves.infrastructure.server.v1.routes.responses.ErrorResponse
+import dev.urieloalves.infrastructure.shared.DatabaseFactory
+import dev.urieloalves.infrastructure.shared.Env
+import dev.urieloalves.infrastructure.shared.errors.ClientException
+import dev.urieloalves.infrastructure.shared.errors.CustomException
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.json
