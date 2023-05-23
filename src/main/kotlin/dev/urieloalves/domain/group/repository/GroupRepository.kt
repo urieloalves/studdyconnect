@@ -6,9 +6,9 @@ import java.util.UUID
 interface GroupRepository {
     fun create(entity: Group)
     fun findAllCreatedBy(id: UUID): List<Group>
-    fun findById(id: String): Group?
-    fun hasUserJoinedGroup(userId: String, groupId: String): Boolean
-    fun joinGroup(userId: String, groupId: String)
-    fun leaveGroup(userId: String, groupId: String)
+    fun findById(id: UUID): Group?
+    fun hasUserJoinedGroup(userId: UUID, groupId: UUID): Boolean
+    fun joinGroup(userId: UUID, groupId: UUID)
+    fun leaveGroup(userId: UUID, groupId: UUID)
     fun searchGroup(text: String): List<Group>
 }
