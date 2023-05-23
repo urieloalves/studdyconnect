@@ -44,8 +44,8 @@ class LeaveGroupUseCase(
         } catch (e: Exception) {
             val msg = "User '${input.userId}' could not be removed from group '${input.groupId}'"
             logger.error(msg, e)
-            when {
-                e is CustomException -> throw e
+            when (e) {
+                is CustomException -> throw e
                 else -> throw ServerException(msg, e)
             }
         }

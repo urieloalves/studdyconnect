@@ -46,8 +46,8 @@ class CreateGroupUseCase(
         } catch (e: Exception) {
             val msg = "Could not create group by '${input.userId}'"
             logger.error(msg, e)
-            when {
-                e is CustomException -> throw e
+            when (e) {
+                is CustomException -> throw e
                 else -> throw ServerException(msg, e)
             }
         }

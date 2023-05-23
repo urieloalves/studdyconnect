@@ -42,8 +42,8 @@ class JoinGroupUseCase(
         } catch (e: Exception) {
             val msg = "User '${input.userId}' cold not join group '${input.groupId}'"
             logger.error(msg, e)
-            when {
-                e is CustomException -> throw e
+            when (e) {
+                is CustomException -> throw e
                 else -> throw ServerException(msg, e)
             }
         }

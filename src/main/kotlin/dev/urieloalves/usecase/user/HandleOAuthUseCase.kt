@@ -74,8 +74,8 @@ class HandleOAuthUseCase(
         } catch (e: Exception) {
             val msg = "An error occurred when handling discord oauth callback"
             logger.error(msg, e)
-            when {
-                e is CustomException -> throw e
+            when (e) {
+                is CustomException -> throw e
                 else -> throw ServerException(msg, e)
             }
         }
