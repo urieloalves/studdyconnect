@@ -15,13 +15,15 @@ class GroupFactoryTest {
         val group = GroupFactory.create(
             name = "group-name",
             description = "group-description",
+            courseLink = "course-link",
             createdBy = createdBy,
-            discordId = "1"
+            discordChannelId = "1"
         )
 
         assertNotNull(group.id)
         assertEquals(group.name, "group-name")
         assertEquals(group.description, "group-description")
+        assertEquals(group.courseLink, "course-link")
         assertEquals(group.createdBy, createdBy)
         assertEquals(group.discordChannel.id, "1")
     }

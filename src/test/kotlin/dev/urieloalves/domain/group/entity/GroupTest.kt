@@ -18,6 +18,7 @@ class GroupTest {
             id = id,
             name = "group-name",
             description = "group-description",
+            courseLink = "course-link",
             createdBy = createdBy,
             discordChannel = DiscordChannel(
                 id = "1"
@@ -39,6 +40,7 @@ class GroupTest {
                 name = "",
                 description = "group-description",
                 createdBy = UUID.randomUUID(),
+                courseLink = "course-link",
                 discordChannel = DiscordChannel(
                     id = "1"
                 )
@@ -53,6 +55,23 @@ class GroupTest {
                 id = UUID.randomUUID(),
                 name = "group-name",
                 description = "",
+                createdBy = UUID.randomUUID(),
+                courseLink = "course-link",
+                discordChannel = DiscordChannel(
+                    id = "1"
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `should throw if course link is empty`() {
+        assertThrows<Exception> {
+            Group(
+                id = UUID.randomUUID(),
+                name = "group-name",
+                description = "group-description",
+                courseLink = "",
                 createdBy = UUID.randomUUID(),
                 discordChannel = DiscordChannel(
                     id = "1"
