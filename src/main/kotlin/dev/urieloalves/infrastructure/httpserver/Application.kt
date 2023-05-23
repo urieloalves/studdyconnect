@@ -1,11 +1,10 @@
-package dev.urieloalves
+package dev.urieloalves.infrastructure.httpserver
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import dev.urieloalves.infrastructure.server.v1.routes.groupRoutes
-import dev.urieloalves.infrastructure.server.v1.routes.oAuthRoutes
-import dev.urieloalves.infrastructure.server.v1.routes.responses.ErrorResponse
-import dev.urieloalves.infrastructure.shared.DatabaseFactory
+import dev.urieloalves.infrastructure.httpserver.v1.routes.groupRoutes
+import dev.urieloalves.infrastructure.httpserver.v1.routes.oAuthRoutes
+import dev.urieloalves.infrastructure.httpserver.v1.routes.responses.ErrorResponse
 import dev.urieloalves.infrastructure.shared.Env
 import dev.urieloalves.infrastructure.shared.errors.ClientException
 import dev.urieloalves.infrastructure.shared.errors.CustomException
@@ -20,8 +19,6 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
 import io.ktor.server.auth.principal
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
@@ -30,11 +27,6 @@ import io.ktor.server.plugins.swagger.swaggerUI
 import io.ktor.server.response.respond
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
-
-fun main() {
-    DatabaseFactory.init()
-    embeddedServer(Netty, port = Env.PORT, module = Application::module).start(wait = true)
-}
 
 @Suppress("unused") // application.conf references the main function. This annotation prevents the IDE from marking it as unused.
 fun Application.module() {
