@@ -14,7 +14,7 @@ class GenerateTokenUseCase(
     private val expiresInMinutes: Long = Env.JWT_EXPIRES_IN_MINUTES
 ) {
 
-    private val logger = LoggerFactory.getLogger("GenerateJWTTokenUseCase")
+    private val logger = LoggerFactory.getLogger("GenerateTokenUseCase")
 
     fun execute(input: InputGenerateTokenUseCaseDto): OutputGenerateTokenUseCaseDto {
         try {

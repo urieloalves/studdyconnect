@@ -6,14 +6,21 @@ import java.util.UUID
 
 object GroupFactory {
 
-    fun create(name: String, description: String, createdBy: UUID, discordId: String): Group {
+    fun create(
+        name: String,
+        description: String,
+        courseLink: String,
+        createdBy: UUID,
+        discordChannelId: String
+    ): Group {
         return Group(
             id = UUID.randomUUID(),
             name = name,
-            description= description,
+            description = description,
+            courseLink = courseLink,
             createdBy = createdBy,
             discordChannel = DiscordChannel(
-                id= discordId
+                id = discordChannelId
             )
         )
     }
