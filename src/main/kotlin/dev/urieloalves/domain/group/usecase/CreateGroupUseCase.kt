@@ -17,6 +17,7 @@ class CreateGroupUseCase(
 ) {
 
     private val logger = LoggerFactory.getLogger("CreateGroupUseCase")
+
     suspend fun execute(input: InputCreateGroupUseCaseDto) {
         try {
             val user =
