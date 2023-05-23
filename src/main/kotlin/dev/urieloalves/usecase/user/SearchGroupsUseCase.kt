@@ -1,9 +1,9 @@
-package dev.urieloalves.domain.user.usecase
+package dev.urieloalves.usecase.user
 
 import dev.urieloalves.domain.group.repository.GroupRepository
-import dev.urieloalves.domain.user.usecase.dto.InputSearchGroupUseCaseDto
-import dev.urieloalves.domain.user.usecase.dto.OutputSearchGroupUseCaseDto
 import dev.urieloalves.infrastructure.shared.errors.ServerException
+import dev.urieloalves.usecase.user.dto.InputSearchGroupUseCaseDto
+import dev.urieloalves.usecase.user.dto.OutputSearchGroupUseCaseDto
 import org.slf4j.LoggerFactory
 
 class SearchGroupsUseCase(
