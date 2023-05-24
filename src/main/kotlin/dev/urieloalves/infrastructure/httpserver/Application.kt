@@ -27,6 +27,7 @@ import io.ktor.server.plugins.swagger.swaggerUI
 import io.ktor.server.response.respond
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
+import java.util.UUID
 
 @Suppress("unused") // application.conf references the main function. This annotation prevents the IDE from marking it as unused.
 fun Application.module() {
@@ -111,8 +112,9 @@ fun Application.module() {
     }
 }
 
-fun ApplicationCall.getUserIdFromToken(): String {
+fun ApplicationCall.getUserIdFromToken(): UUID {
     val principal = this.principal<JWTPrincipal>()
-    return principal?.payload?.getClaim("id")?.asString()
+    val id = principal?.payload?.getClaim("id")?.asString()
         ?: throw ClientException("Could not extract user id from JWT token")
+    return UUID.fromString(id)
 }
