@@ -1,11 +1,11 @@
-package dev.urieloalves.usecase.user
+package dev.urieloalves.usecase.group
 
 import dev.urieloalves.domain.group.repository.GroupRepository
 import dev.urieloalves.domain.user.repository.UserRepository
 import dev.urieloalves.infrastructure.discord.DiscordClient
 import dev.urieloalves.infrastructure.discord.dto.InputJoinChannelDto
 import dev.urieloalves.infrastructure.httpserver.error.ClientException
-import dev.urieloalves.usecase.user.dto.InputJoinGroupUseCaseDto
+import dev.urieloalves.usecase.group.dto.InputJoinGroupUseCaseDto
 import io.ktor.server.plugins.NotFoundException
 import org.slf4j.LoggerFactory
 

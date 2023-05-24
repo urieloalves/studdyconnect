@@ -6,11 +6,11 @@ import dev.urieloalves.infrastructure.group.repository.GroupRepository
 import dev.urieloalves.infrastructure.user.repository.UserRepository
 import dev.urieloalves.usecase.group.CreateGroupUseCase
 import dev.urieloalves.usecase.group.GetGroupsByUserUseCase
+import dev.urieloalves.usecase.group.JoinGroupUseCase
+import dev.urieloalves.usecase.group.LeaveGroupUseCase
+import dev.urieloalves.usecase.group.SearchGroupsUseCase
 import dev.urieloalves.usecase.user.GenerateTokenUseCase
 import dev.urieloalves.usecase.user.HandleOAuthUseCase
-import dev.urieloalves.usecase.user.JoinGroupUseCase
-import dev.urieloalves.usecase.user.LeaveGroupUseCase
-import dev.urieloalves.usecase.user.SearchGroupsUseCase
 import dev.urieloalves.domain.group.repository.GroupRepository as GroupRepositoryInterface
 import dev.urieloalves.domain.user.repository.UserRepository as UserRepositoryInterface
 

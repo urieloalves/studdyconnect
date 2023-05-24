@@ -8,9 +8,9 @@ import dev.urieloalves.infrastructure.httpserver.route.v1.response.GroupResponse
 import dev.urieloalves.infrastructure.module.Module
 import dev.urieloalves.usecase.group.dto.InputCreateGroupUseCaseDto
 import dev.urieloalves.usecase.group.dto.InputGetGroupsByUserUseCaseDto
-import dev.urieloalves.usecase.user.dto.InputJoinGroupUseCaseDto
-import dev.urieloalves.usecase.user.dto.InputLeaveGroupUseCaseDto
-import dev.urieloalves.usecase.user.dto.InputSearchGroupUseCaseDto
+import dev.urieloalves.usecase.group.dto.InputJoinGroupUseCaseDto
+import dev.urieloalves.usecase.group.dto.InputLeaveGroupUseCaseDto
+import dev.urieloalves.usecase.group.dto.InputSearchGroupUseCaseDto
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
