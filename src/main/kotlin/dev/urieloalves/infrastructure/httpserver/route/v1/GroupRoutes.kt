@@ -1,11 +1,11 @@
 package dev.urieloalves.infrastructure.httpserver.route.v1
 
+import dev.urieloalves.infrastructure.httpserver.error.ClientException
+import dev.urieloalves.infrastructure.httpserver.error.ServerException
 import dev.urieloalves.infrastructure.httpserver.getUserIdFromToken
 import dev.urieloalves.infrastructure.httpserver.route.v1.request.CreateGroupRequest
 import dev.urieloalves.infrastructure.httpserver.route.v1.response.GroupResponse
 import dev.urieloalves.infrastructure.module.Module
-import dev.urieloalves.infrastructure.shared.errors.ClientException
-import dev.urieloalves.infrastructure.shared.errors.ServerException
 import dev.urieloalves.usecase.group.dto.InputCreateGroupUseCaseDto
 import dev.urieloalves.usecase.group.dto.InputGetGroupsByUserUseCaseDto
 import dev.urieloalves.usecase.user.dto.InputJoinGroupUseCaseDto

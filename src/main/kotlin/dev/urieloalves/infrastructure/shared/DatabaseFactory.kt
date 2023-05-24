@@ -1,6 +1,6 @@
 package dev.urieloalves.infrastructure.shared
 
-import dev.urieloalves.infrastructure.shared.errors.DBException
+import dev.urieloalves.infrastructure.shared.error.DatabaseException
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.slf4j.LoggerFactory
@@ -25,7 +25,7 @@ object DatabaseFactory {
         } catch (e: Exception) {
             val msg = "An error occurred when connecting or migrating DB"
             logger.error(msg, e)
-            throw DBException(msg, e)
+            throw DatabaseException(msg, e)
         }
     }
 }

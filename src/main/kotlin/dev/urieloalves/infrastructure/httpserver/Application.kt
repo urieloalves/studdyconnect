@@ -2,12 +2,13 @@ package dev.urieloalves.infrastructure.httpserver
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import dev.urieloalves.domain.shared.error.ValidationException
+import dev.urieloalves.infrastructure.httpserver.error.ClientException
+import dev.urieloalves.infrastructure.httpserver.error.CustomException
 import dev.urieloalves.infrastructure.httpserver.route.v1.groupRoutes
 import dev.urieloalves.infrastructure.httpserver.route.v1.oAuthRoutes
 import dev.urieloalves.infrastructure.httpserver.route.v1.response.ErrorResponse
 import dev.urieloalves.infrastructure.shared.Env
-import dev.urieloalves.infrastructure.shared.errors.ClientException
-import dev.urieloalves.infrastructure.shared.errors.CustomException
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.json
@@ -47,15 +48,15 @@ fun Application.module() {
 
     install(StatusPages) {
         exception<Throwable> { call, cause ->
-            when {
-                cause is CustomException -> call.respond(
+            when (cause) {
+                is CustomException -> call.respond(
                     ErrorResponse(
                         status = cause.statusCode,
                         message = cause.message
                     )
                 )
 
-                cause is BadRequestException -> call.respond(
+                is BadRequestException, is ValidationException -> call.respond(
                     ErrorResponse(
                         status = 400,
                         message = cause.message.toString()

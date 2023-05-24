@@ -4,9 +4,7 @@ import dev.urieloalves.domain.group.repository.GroupRepository
 import dev.urieloalves.domain.user.repository.UserRepository
 import dev.urieloalves.infrastructure.discord.DiscordClient
 import dev.urieloalves.infrastructure.discord.dto.InputLeaveChannelDto
-import dev.urieloalves.infrastructure.shared.errors.ClientException
-import dev.urieloalves.infrastructure.shared.errors.CustomException
-import dev.urieloalves.infrastructure.shared.errors.ServerException
+import dev.urieloalves.infrastructure.httpserver.error.ClientException
 import dev.urieloalves.usecase.user.dto.InputLeaveGroupUseCaseDto
 import io.ktor.server.plugins.NotFoundException
 import org.slf4j.LoggerFactory
@@ -42,12 +40,8 @@ class LeaveGroupUseCase(
             groupRepository.leaveGroup(userId = input.userId, groupId = input.groupId)
             logger.info("User '${input.userId}' was successfully removed from group '${input.groupId}'")
         } catch (e: Exception) {
-            val msg = "User '${input.userId}' could not be removed from group '${input.groupId}'"
-            logger.error(msg, e)
-            when (e) {
-                is CustomException -> throw e
-                else -> throw ServerException(msg, e)
-            }
+            logger.error("User '${input.userId}' could not be removed from group '${input.groupId}'", e)
+            throw e
         }
     }
 }

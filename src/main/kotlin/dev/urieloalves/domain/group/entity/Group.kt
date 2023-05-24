@@ -1,6 +1,7 @@
 package dev.urieloalves.domain.group.entity
 
 import dev.urieloalves.domain.group.valueobject.DiscordChannel
+import dev.urieloalves.domain.shared.error.ValidationException
 import java.util.UUID
 
 class Group(
@@ -20,19 +21,19 @@ class Group(
 
     private fun validateName() {
         if (name.isEmpty()) {
-            throw Exception("Name must not be empty")
+            throw ValidationException("Name must not be empty")
         }
     }
 
     private fun validateDescription() {
         if (description.isEmpty()) {
-            throw Exception("Description must not be empty")
+            throw ValidationException("Description must not be empty")
         }
     }
 
     private fun validateCourseLink() {
         if (courseLink.isEmpty()) {
-            throw Exception("CourseLink must not be empty")
+            throw ValidationException("CourseLink must not be empty")
         }
     }
 }

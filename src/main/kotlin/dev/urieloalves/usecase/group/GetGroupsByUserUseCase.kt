@@ -1,7 +1,6 @@
 package dev.urieloalves.usecase.group
 
 import dev.urieloalves.domain.group.repository.GroupRepository
-import dev.urieloalves.infrastructure.shared.errors.ServerException
 import dev.urieloalves.usecase.group.dto.InputGetGroupsByUserUseCaseDto
 import dev.urieloalves.usecase.group.dto.OutputGetGroupsByUserUseCaseDto
 import org.slf4j.LoggerFactory
@@ -26,9 +25,8 @@ class GetGroupsByUserUseCase(
                 )
             }
         } catch (e: Exception) {
-            val msg = "An error occurred when getting groups for user '${input.userId}'"
-            logger.error(msg, e)
-            throw ServerException(msg, e)
+            logger.error("An error occurred when getting groups for user '${input.userId}'", e)
+            throw e
         }
     }
 

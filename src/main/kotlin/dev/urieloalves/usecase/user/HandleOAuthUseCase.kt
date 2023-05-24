@@ -6,8 +6,6 @@ import dev.urieloalves.infrastructure.discord.DiscordClient
 import dev.urieloalves.infrastructure.discord.dto.InputGetAccessTokenDto
 import dev.urieloalves.infrastructure.discord.dto.InputGetUserDto
 import dev.urieloalves.infrastructure.discord.dto.InputJoinServerDto
-import dev.urieloalves.infrastructure.shared.errors.CustomException
-import dev.urieloalves.infrastructure.shared.errors.ServerException
 import dev.urieloalves.usecase.user.dto.InputGenerateTokenUseCaseDto
 import dev.urieloalves.usecase.user.dto.InputHandleOauthUseCaseDto
 import dev.urieloalves.usecase.user.dto.OutputHandleOauthUseCaseDto
@@ -72,12 +70,8 @@ class HandleOAuthUseCase(
                 token = tokenOutput.token
             )
         } catch (e: Exception) {
-            val msg = "An error occurred when handling discord oauth callback"
-            logger.error(msg, e)
-            when (e) {
-                is CustomException -> throw e
-                else -> throw ServerException(msg, e)
-            }
+            logger.error("An error occurred when handling discord oauth callback", e)
+            throw e
         }
     }
 }

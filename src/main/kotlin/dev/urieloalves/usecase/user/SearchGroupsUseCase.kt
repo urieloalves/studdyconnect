@@ -1,7 +1,6 @@
 package dev.urieloalves.usecase.user
 
 import dev.urieloalves.domain.group.repository.GroupRepository
-import dev.urieloalves.infrastructure.shared.errors.ServerException
 import dev.urieloalves.usecase.user.dto.InputSearchGroupUseCaseDto
 import dev.urieloalves.usecase.user.dto.OutputSearchGroupUseCaseDto
 import org.slf4j.LoggerFactory
@@ -26,10 +25,8 @@ class SearchGroupsUseCase(
                 )
             }
         } catch (e: Exception) {
-            val msg = "An error occurred when searching for groups with text '${input.text}'"
-            logger.error(msg, e)
-            throw ServerException(msg, e)
+            logger.error("An error occurred when searching for groups with text '${input.text}'", e)
+            throw e
         }
-
     }
 }

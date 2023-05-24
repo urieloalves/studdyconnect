@@ -1,5 +1,7 @@
 package dev.urieloalves.domain.group.valueobject
 
+import dev.urieloalves.domain.shared.error.ValidationException
+
 class DiscordChannel(val id: String) {
 
     init {
@@ -8,10 +10,10 @@ class DiscordChannel(val id: String) {
 
     private fun validateId() {
         if (id.isEmpty()) {
-            throw Exception("Id must not be empty")
+            throw ValidationException("Id must not be empty")
         }
         if (id.toLongOrNull() == null) {
-            throw Exception("Id '$id' cannot be parsed to long")
+            throw ValidationException("Id '$id' cannot be parsed to long")
         }
     }
 }

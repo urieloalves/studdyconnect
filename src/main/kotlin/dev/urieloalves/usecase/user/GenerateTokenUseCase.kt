@@ -3,7 +3,6 @@ package dev.urieloalves.usecase.user
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import dev.urieloalves.infrastructure.shared.Env
-import dev.urieloalves.infrastructure.shared.errors.ServerException
 import dev.urieloalves.usecase.user.dto.InputGenerateTokenUseCaseDto
 import dev.urieloalves.usecase.user.dto.OutputGenerateTokenUseCaseDto
 import org.slf4j.LoggerFactory
@@ -27,12 +26,8 @@ class GenerateTokenUseCase(
                 token = token
             )
         } catch (e: Exception) {
-            val msg = "Could not generate JWT token for user `${input.userId}`"
-            logger.error(msg, e)
-            throw ServerException(
-                message = msg,
-                cause = e
-            )
+            logger.error("Could not generate JWT token for user `${input.userId}`", e)
+            throw e
         }
     }
 }

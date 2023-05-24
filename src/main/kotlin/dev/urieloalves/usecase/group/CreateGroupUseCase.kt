@@ -5,8 +5,6 @@ import dev.urieloalves.domain.group.repository.GroupRepository
 import dev.urieloalves.domain.user.repository.UserRepository
 import dev.urieloalves.infrastructure.discord.DiscordClient
 import dev.urieloalves.infrastructure.discord.dto.InputCreateChannelDto
-import dev.urieloalves.infrastructure.shared.errors.CustomException
-import dev.urieloalves.infrastructure.shared.errors.ServerException
 import dev.urieloalves.usecase.group.dto.InputCreateGroupUseCaseDto
 import io.ktor.server.plugins.NotFoundException
 import org.slf4j.LoggerFactory
@@ -44,12 +42,8 @@ class CreateGroupUseCase(
             )
             logger.info("Group was successfully created by user '${input.userId}'")
         } catch (e: Exception) {
-            val msg = "Could not create group by '${input.userId}'"
-            logger.error(msg, e)
-            when (e) {
-                is CustomException -> throw e
-                else -> throw ServerException(msg, e)
-            }
+            logger.error("Could not create group by '${input.userId}'", e)
+            throw e
         }
     }
 }

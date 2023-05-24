@@ -1,4 +1,4 @@
-package dev.urieloalves.infrastructure.shared.errors
+package dev.urieloalves.infrastructure.httpserver.error
 
 open class CustomException(
     val statusCode: Int,

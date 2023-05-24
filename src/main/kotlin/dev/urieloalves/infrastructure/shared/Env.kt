@@ -1,7 +1,6 @@
 package dev.urieloalves.infrastructure.shared
 
-import dev.urieloalves.infrastructure.shared.errors.CustomException
-import dev.urieloalves.infrastructure.shared.errors.LoadingEnvironmentVariableException
+import dev.urieloalves.infrastructure.shared.error.LoadingEnvironmentVariableException
 import io.github.cdimascio.dotenv.Dotenv
 import org.slf4j.LoggerFactory
 
@@ -63,17 +62,12 @@ object Env {
             DB_PASSWORD = dotenv["DB_PASSWORD"] ?: throw notFound("DB_PASSWORD")
             DB_NAME = dotenv["DB_NAME"] ?: throw notFound("DB_NAME")
         } catch (e: Exception) {
-            val msg = "An error occurred when loading environment variables"
-            logger.error(msg, e)
-            when {
-                e is CustomException -> throw e
-                else -> throw LoadingEnvironmentVariableException(msg)
-            }
+            logger.error("An error occurred when loading environment variables", e)
+            throw e
         }
-
     }
 
-    private fun notFound(variable: String): CustomException {
+    private fun notFound(variable: String): Exception {
         return LoadingEnvironmentVariableException(
             message = "Environment variable '$variable' was mot found"
         )

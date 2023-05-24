@@ -16,8 +16,8 @@ import dev.urieloalves.infrastructure.discord.dto.InputLeaveChannelDto
 import dev.urieloalves.infrastructure.discord.dto.OutputCreateChannelDto
 import dev.urieloalves.infrastructure.discord.dto.OutputGetAccessTokenDto
 import dev.urieloalves.infrastructure.discord.dto.OutputGetUserDto
+import dev.urieloalves.infrastructure.discord.error.DiscordClientException
 import dev.urieloalves.infrastructure.shared.Env
-import dev.urieloalves.infrastructure.shared.errors.DiscordException
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -93,7 +93,7 @@ class DiscordClientImpl : DiscordClient {
         } catch (e: Exception) {
             val msg = "Could not add discord user '${input.discordUserId}' to StudyConnect server"
             logger.error(msg, e)
-            throw DiscordException(msg, e)
+            throw DiscordClientException(msg, e)
         }
     }
 
@@ -134,7 +134,7 @@ class DiscordClientImpl : DiscordClient {
         } catch (e: Exception) {
             val msg = "Could not create channel for discord user '${input.discordUserId}'"
             logger.error(msg, e)
-            throw DiscordException(msg, e)
+            throw DiscordClientException(msg, e)
         }
     }
 
@@ -153,7 +153,7 @@ class DiscordClientImpl : DiscordClient {
         } catch (e: Exception) {
             val msg = "Could not add discord user '${input.discordUserId}' to discord channel '${input.channelId}'"
             logger.error(msg, e)
-            throw DiscordException(msg, e)
+            throw DiscordClientException(msg, e)
         }
     }
 
@@ -172,7 +172,7 @@ class DiscordClientImpl : DiscordClient {
         } catch (e: Exception) {
             val msg = "Could not remove discord user `${input.discordUserId}` from channel '${input.channelId}'"
             logger.error(msg, e)
-            throw DiscordException(msg, e)
+            throw DiscordClientException(msg, e)
         }
     }
 }

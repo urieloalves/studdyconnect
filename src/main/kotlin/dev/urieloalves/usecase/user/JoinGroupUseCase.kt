@@ -4,9 +4,7 @@ import dev.urieloalves.domain.group.repository.GroupRepository
 import dev.urieloalves.domain.user.repository.UserRepository
 import dev.urieloalves.infrastructure.discord.DiscordClient
 import dev.urieloalves.infrastructure.discord.dto.InputJoinChannelDto
-import dev.urieloalves.infrastructure.shared.errors.ClientException
-import dev.urieloalves.infrastructure.shared.errors.CustomException
-import dev.urieloalves.infrastructure.shared.errors.ServerException
+import dev.urieloalves.infrastructure.httpserver.error.ClientException
 import dev.urieloalves.usecase.user.dto.InputJoinGroupUseCaseDto
 import io.ktor.server.plugins.NotFoundException
 import org.slf4j.LoggerFactory
@@ -40,12 +38,8 @@ class JoinGroupUseCase(
             groupRepository.joinGroup(userId = input.userId, groupId = input.groupId)
             logger.info("User '${input.userId}' was successfully added to group '${input.groupId}'")
         } catch (e: Exception) {
-            val msg = "User '${input.userId}' cold not join group '${input.groupId}'"
-            logger.error(msg, e)
-            when (e) {
-                is CustomException -> throw e
-                else -> throw ServerException(msg, e)
-            }
+            logger.error("User '${input.userId}' cold not join group '${input.groupId}'", e)
+            throw e
         }
 
     }
