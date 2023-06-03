@@ -3,10 +3,8 @@ package dev.urieloalves.application.group
 import dev.urieloalves.application.group.dto.InputLeaveGroupUseCaseDto
 import dev.urieloalves.domain.group.repository.GroupRepository
 import dev.urieloalves.domain.user.repository.UserRepository
-import dev.urieloalves.infrastructure.api.error.ClientException
-import dev.urieloalves.infrastructure.discord.DiscordClient
 import dev.urieloalves.infrastructure.discord.dto.InputLeaveChannelDto
-import io.ktor.server.plugins.NotFoundException
+import dev.urieloalves.studyconnect.application.discord.DiscordClient
 import org.slf4j.LoggerFactory
 
 class LeaveGroupUseCase(
@@ -20,16 +18,16 @@ class LeaveGroupUseCase(
     suspend fun execute(input: InputLeaveGroupUseCaseDto) {
         try {
             val user =
-                userRepository.findById(input.userId) ?: throw NotFoundException("User '${input.userId}' not found")
+                userRepository.findById(input.userId) ?: throw Exception("User '${input.userId}' not found")
 
             val group =
-                groupRepository.findById(input.groupId) ?: throw NotFoundException("Group '${input.groupId}' not found")
+                groupRepository.findById(input.groupId) ?: throw Exception("Group '${input.groupId}' not found")
 
-            if (group.createdBy == input.userId) throw ClientException("User '${input.userId}' cannot be removed from its own group '${input.groupId}'")
+            if (group.createdBy == input.userId) throw Exception("User '${input.userId}' cannot be removed from its own group '${input.groupId}'")
 
             val hasJoined = groupRepository.hasUserJoinedGroup(userId = input.userId, groupId = input.groupId)
 
-            if (!hasJoined) throw ClientException("User '$user' is not a member of group '${input.groupId}'")
+            if (!hasJoined) throw Exception("User '$user' is not a member of group '${input.groupId}'")
 
             discordClient.leaveChannel(
                 InputLeaveChannelDto(

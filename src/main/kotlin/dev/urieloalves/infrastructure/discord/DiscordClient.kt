@@ -7,38 +7,20 @@ import dev.kord.core.Kord
 import dev.kord.rest.service.createTextChannel
 import dev.kord.rest.service.editMemberPermissions
 import dev.kord.rest.service.editRolePermission
-import dev.urieloalves.infrastructure.discord.dto.InputCreateChannelDto
-import dev.urieloalves.infrastructure.discord.dto.InputGetAccessTokenDto
-import dev.urieloalves.infrastructure.discord.dto.InputGetUserDto
-import dev.urieloalves.infrastructure.discord.dto.InputJoinChannelDto
-import dev.urieloalves.infrastructure.discord.dto.InputJoinServerDto
-import dev.urieloalves.infrastructure.discord.dto.InputLeaveChannelDto
-import dev.urieloalves.infrastructure.discord.dto.OutputCreateChannelDto
-import dev.urieloalves.infrastructure.discord.dto.OutputGetAccessTokenDto
-import dev.urieloalves.infrastructure.discord.dto.OutputGetUserDto
+import dev.urieloalves.infrastructure.discord.dto.*
 import dev.urieloalves.infrastructure.discord.error.DiscordClientException
 import dev.urieloalves.infrastructure.shared.Env
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.request.forms.submitForm
-import io.ktor.client.request.get
-import io.ktor.client.request.headers
-import io.ktor.http.HttpHeaders
-import io.ktor.http.parameters
-import io.ktor.serialization.kotlinx.json.json
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
+import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
 
-interface DiscordClient {
-    suspend fun getAccessToken(input: InputGetAccessTokenDto): OutputGetAccessTokenDto
-    suspend fun getUser(input: InputGetUserDto): OutputGetUserDto
-    suspend fun joinServer(input: InputJoinServerDto)
-    suspend fun createChannel(input: InputCreateChannelDto): OutputCreateChannelDto
-    suspend fun joinChannel(input: InputJoinChannelDto)
-    suspend fun leaveChannel(input: InputLeaveChannelDto)
-}
 
 class DiscordClientImpl : DiscordClient {
 

@@ -5,11 +5,10 @@ import dev.urieloalves.application.user.dto.InputHandleOauthUseCaseDto
 import dev.urieloalves.application.user.dto.OutputHandleOauthUseCaseDto
 import dev.urieloalves.domain.user.factory.UserFactory
 import dev.urieloalves.domain.user.repository.UserRepository
-import dev.urieloalves.infrastructure.discord.DiscordClient
 import dev.urieloalves.infrastructure.discord.dto.InputGetAccessTokenDto
 import dev.urieloalves.infrastructure.discord.dto.InputGetUserDto
 import dev.urieloalves.infrastructure.discord.dto.InputJoinServerDto
-import io.ktor.server.plugins.NotFoundException
+import dev.urieloalves.studyconnect.application.discord.DiscordClient
 import org.slf4j.LoggerFactory
 
 class HandleOAuthUseCase(
@@ -49,7 +48,7 @@ class HandleOAuthUseCase(
                 )
                 userRepository.create(user)
                 logger.info("User was created for discord user '${getUserOutput.id}'")
-                existentUser = userRepository.findByDiscordId(getUserOutput.id) ?: throw NotFoundException("Could not")
+                existentUser = userRepository.findByDiscordId(getUserOutput.id) ?: throw Exception("Could not")
                 discordClient.joinServer(
                     InputJoinServerDto(
                         discordUserId = getUserOutput.id,
