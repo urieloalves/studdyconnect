@@ -1,11 +1,11 @@
 package dev.urieloalves.infrastructure.httpserver.route.v1
 
+import dev.urieloalves.application.user.dto.InputHandleOauthUseCaseDto
 import dev.urieloalves.infrastructure.httpserver.error.ServerException
 import dev.urieloalves.infrastructure.httpserver.route.v1.response.OAuthResponse
 import dev.urieloalves.infrastructure.httpserver.route.v1.response.UserResponse
 import dev.urieloalves.infrastructure.module.Module
 import dev.urieloalves.infrastructure.shared.Env
-import dev.urieloalves.usecase.user.dto.InputHandleOauthUseCaseDto
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondRedirect

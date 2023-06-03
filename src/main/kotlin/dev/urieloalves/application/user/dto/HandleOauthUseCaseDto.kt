@@ -1,4 +1,4 @@
-package dev.urieloalves.usecase.user.dto
+package dev.urieloalves.application.user.dto
 
 import java.util.UUID
 

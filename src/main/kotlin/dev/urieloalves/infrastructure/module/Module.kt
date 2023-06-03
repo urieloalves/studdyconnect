@@ -1,16 +1,16 @@
 package dev.urieloalves.infrastructure.module
 
+import dev.urieloalves.application.group.CreateGroupUseCase
+import dev.urieloalves.application.group.GetGroupsByUserUseCase
+import dev.urieloalves.application.group.JoinGroupUseCase
+import dev.urieloalves.application.group.LeaveGroupUseCase
+import dev.urieloalves.application.group.SearchGroupsUseCase
+import dev.urieloalves.application.user.GenerateTokenUseCase
+import dev.urieloalves.application.user.HandleOAuthUseCase
 import dev.urieloalves.infrastructure.discord.DiscordClient
 import dev.urieloalves.infrastructure.discord.DiscordClientImpl
 import dev.urieloalves.infrastructure.group.repository.GroupRepository
 import dev.urieloalves.infrastructure.user.repository.UserRepository
-import dev.urieloalves.usecase.group.CreateGroupUseCase
-import dev.urieloalves.usecase.group.GetGroupsByUserUseCase
-import dev.urieloalves.usecase.group.JoinGroupUseCase
-import dev.urieloalves.usecase.group.LeaveGroupUseCase
-import dev.urieloalves.usecase.group.SearchGroupsUseCase
-import dev.urieloalves.usecase.user.GenerateTokenUseCase
-import dev.urieloalves.usecase.user.HandleOAuthUseCase
 import dev.urieloalves.domain.group.repository.GroupRepository as GroupRepositoryInterface
 import dev.urieloalves.domain.user.repository.UserRepository as UserRepositoryInterface
 

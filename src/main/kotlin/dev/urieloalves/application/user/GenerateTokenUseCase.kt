@@ -1,10 +1,10 @@
-package dev.urieloalves.usecase.user
+package dev.urieloalves.application.user
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import dev.urieloalves.application.user.dto.InputGenerateTokenUseCaseDto
+import dev.urieloalves.application.user.dto.OutputGenerateTokenUseCaseDto
 import dev.urieloalves.infrastructure.shared.Env
-import dev.urieloalves.usecase.user.dto.InputGenerateTokenUseCaseDto
-import dev.urieloalves.usecase.user.dto.OutputGenerateTokenUseCaseDto
 import org.slf4j.LoggerFactory
 import java.time.Instant
 

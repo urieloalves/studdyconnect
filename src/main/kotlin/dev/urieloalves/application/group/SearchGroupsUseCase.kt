@@ -1,8 +1,8 @@
-package dev.urieloalves.usecase.group
+package dev.urieloalves.application.group
 
+import dev.urieloalves.application.group.dto.InputSearchGroupUseCaseDto
+import dev.urieloalves.application.group.dto.OutputSearchGroupUseCaseDto
 import dev.urieloalves.domain.group.repository.GroupRepository
-import dev.urieloalves.usecase.group.dto.InputSearchGroupUseCaseDto
-import dev.urieloalves.usecase.group.dto.OutputSearchGroupUseCaseDto
 import org.slf4j.LoggerFactory
 
 class SearchGroupsUseCase(

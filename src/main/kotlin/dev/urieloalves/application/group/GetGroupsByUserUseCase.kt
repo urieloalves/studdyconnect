@@ -1,8 +1,8 @@
-package dev.urieloalves.usecase.group
+package dev.urieloalves.application.group
 
+import dev.urieloalves.application.group.dto.InputGetGroupsByUserUseCaseDto
+import dev.urieloalves.application.group.dto.OutputGetGroupsByUserUseCaseDto
 import dev.urieloalves.domain.group.repository.GroupRepository
-import dev.urieloalves.usecase.group.dto.InputGetGroupsByUserUseCaseDto
-import dev.urieloalves.usecase.group.dto.OutputGetGroupsByUserUseCaseDto
 import org.slf4j.LoggerFactory
 
 class GetGroupsByUserUseCase(

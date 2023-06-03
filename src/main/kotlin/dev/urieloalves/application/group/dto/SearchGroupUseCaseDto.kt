@@ -1,12 +1,12 @@
-package dev.urieloalves.usecase.group.dto
+package dev.urieloalves.application.group.dto
 
 import java.util.UUID
 
-data class InputGetGroupsByUserUseCaseDto(
-    val userId: UUID
+class InputSearchGroupUseCaseDto(
+    val text: String
 )
 
-data class OutputGetGroupsByUserUseCaseDto(
+class OutputSearchGroupUseCaseDto(
     val id: UUID,
     val name: String,
     val description: String,
