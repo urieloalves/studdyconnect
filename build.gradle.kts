@@ -18,7 +18,7 @@ plugins {
     id("org.flywaydb.flyway") version "9.17.0"
 }
 
-group = "dev.urieloalves"
+group = "dev.urieloalves.studyconnect"
 version = "0.0.1"
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
