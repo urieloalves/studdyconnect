@@ -1,8 +1,9 @@
-package dev.urieloalves.domain.group.factory
+package dev.urieloalves.domain.domain.group.factory
 
+import dev.urieloalves.domain.group.factory.GroupFactory
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import java.util.UUID
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 

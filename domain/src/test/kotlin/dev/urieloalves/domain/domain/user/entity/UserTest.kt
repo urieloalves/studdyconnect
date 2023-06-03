@@ -1,5 +1,6 @@
-package dev.urieloalves.domain.user.entity
+package dev.urieloalves.domain.domain.user.entity
 
+import dev.urieloalves.domain.user.entity.User
 import dev.urieloalves.domain.user.valueobject.DiscordUser
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance

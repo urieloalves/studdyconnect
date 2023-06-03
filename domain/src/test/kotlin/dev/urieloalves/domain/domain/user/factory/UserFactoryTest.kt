@@ -1,5 +1,6 @@
-package dev.urieloalves.domain.user.factory
+package dev.urieloalves.domain.domain.user.factory
 
+import dev.urieloalves.domain.user.factory.UserFactory
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.util.*
@@ -13,7 +14,7 @@ class UserFactoryTest {
     fun `should create user entity`() {
         val user = UserFactory.create(
             email = "user@email.com",
-            discordId="1",
+            discordId = "1",
             discordUsername = "discord-username"
         )
 

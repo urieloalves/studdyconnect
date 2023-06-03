@@ -1,5 +1,6 @@
-package dev.urieloalves.domain.group.valueobject
+package dev.urieloalves.domain.domain.group.valueobject
 
+import dev.urieloalves.domain.group.valueobject.DiscordChannel
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows

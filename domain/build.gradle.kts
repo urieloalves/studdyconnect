@@ -1,5 +1,5 @@
 plugins {
-    id("java")
+    kotlin("jvm") version "1.8.21"
 }
 
 group = "dev.urieloalves.studyconnect.domain"
@@ -10,8 +10,7 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(kotlin("test"))
 }
 
 tasks.test {

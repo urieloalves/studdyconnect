@@ -1,5 +1,6 @@
-package dev.urieloalves.domain.group.entity
+package dev.urieloalves.domain.domain.group.entity
 
+import dev.urieloalves.domain.group.entity.Group
 import dev.urieloalves.domain.group.valueobject.DiscordChannel
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
