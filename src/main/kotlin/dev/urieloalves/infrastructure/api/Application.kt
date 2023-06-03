@@ -1,13 +1,13 @@
-package dev.urieloalves.infrastructure.httpserver
+package dev.urieloalves.infrastructure.api
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import dev.urieloalves.domain.shared.error.ValidationException
-import dev.urieloalves.infrastructure.httpserver.error.ClientException
-import dev.urieloalves.infrastructure.httpserver.error.CustomException
-import dev.urieloalves.infrastructure.httpserver.route.v1.groupRoutes
-import dev.urieloalves.infrastructure.httpserver.route.v1.oAuthRoutes
-import dev.urieloalves.infrastructure.httpserver.route.v1.response.ErrorResponse
+import dev.urieloalves.infrastructure.api.error.ClientException
+import dev.urieloalves.infrastructure.api.error.CustomException
+import dev.urieloalves.infrastructure.api.route.v1.groupRoutes
+import dev.urieloalves.infrastructure.api.route.v1.oAuthRoutes
+import dev.urieloalves.infrastructure.api.route.v1.response.ErrorResponse
 import dev.urieloalves.infrastructure.shared.Env
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod

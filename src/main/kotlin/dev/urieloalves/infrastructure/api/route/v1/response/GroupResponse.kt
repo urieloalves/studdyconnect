@@ -1,4 +1,4 @@
-package dev.urieloalves.infrastructure.httpserver.route.v1.response
+package dev.urieloalves.infrastructure.api.route.v1.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

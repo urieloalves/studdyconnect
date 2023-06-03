@@ -1,15 +1,15 @@
-package dev.urieloalves.infrastructure.httpserver.route.v1
+package dev.urieloalves.infrastructure.api.route.v1
 
 import dev.urieloalves.application.group.dto.InputCreateGroupUseCaseDto
 import dev.urieloalves.application.group.dto.InputGetGroupsByUserUseCaseDto
 import dev.urieloalves.application.group.dto.InputJoinGroupUseCaseDto
 import dev.urieloalves.application.group.dto.InputLeaveGroupUseCaseDto
 import dev.urieloalves.application.group.dto.InputSearchGroupUseCaseDto
-import dev.urieloalves.infrastructure.httpserver.error.ClientException
-import dev.urieloalves.infrastructure.httpserver.error.ServerException
-import dev.urieloalves.infrastructure.httpserver.getUserIdFromToken
-import dev.urieloalves.infrastructure.httpserver.route.v1.request.CreateGroupRequest
-import dev.urieloalves.infrastructure.httpserver.route.v1.response.GroupResponse
+import dev.urieloalves.infrastructure.api.error.ClientException
+import dev.urieloalves.infrastructure.api.error.ServerException
+import dev.urieloalves.infrastructure.api.getUserIdFromToken
+import dev.urieloalves.infrastructure.api.route.v1.request.CreateGroupRequest
+import dev.urieloalves.infrastructure.api.route.v1.response.GroupResponse
 import dev.urieloalves.infrastructure.module.Module
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call

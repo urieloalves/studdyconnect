@@ -3,9 +3,9 @@ package dev.urieloalves.application.group
 import dev.urieloalves.application.group.dto.InputJoinGroupUseCaseDto
 import dev.urieloalves.domain.group.repository.GroupRepository
 import dev.urieloalves.domain.user.repository.UserRepository
+import dev.urieloalves.infrastructure.api.error.ClientException
 import dev.urieloalves.infrastructure.discord.DiscordClient
 import dev.urieloalves.infrastructure.discord.dto.InputJoinChannelDto
-import dev.urieloalves.infrastructure.httpserver.error.ClientException
 import io.ktor.server.plugins.NotFoundException
 import org.slf4j.LoggerFactory
 

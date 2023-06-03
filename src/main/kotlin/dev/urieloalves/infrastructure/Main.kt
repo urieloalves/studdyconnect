@@ -1,5 +1,6 @@
-package dev.urieloalves.infrastructure.httpserver
+package dev.urieloalves.infrastructure
 
+import dev.urieloalves.infrastructure.api.module
 import dev.urieloalves.infrastructure.shared.DatabaseFactory
 import dev.urieloalves.infrastructure.shared.Env
 import io.ktor.server.application.Application

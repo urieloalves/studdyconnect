@@ -1,9 +1,9 @@
-package dev.urieloalves.infrastructure.httpserver.route.v1
+package dev.urieloalves.infrastructure.api.route.v1
 
 import dev.urieloalves.application.user.dto.InputHandleOauthUseCaseDto
-import dev.urieloalves.infrastructure.httpserver.error.ServerException
-import dev.urieloalves.infrastructure.httpserver.route.v1.response.OAuthResponse
-import dev.urieloalves.infrastructure.httpserver.route.v1.response.UserResponse
+import dev.urieloalves.infrastructure.api.error.ServerException
+import dev.urieloalves.infrastructure.api.route.v1.response.OAuthResponse
+import dev.urieloalves.infrastructure.api.route.v1.response.UserResponse
 import dev.urieloalves.infrastructure.module.Module
 import dev.urieloalves.infrastructure.shared.Env
 import io.ktor.server.application.call
