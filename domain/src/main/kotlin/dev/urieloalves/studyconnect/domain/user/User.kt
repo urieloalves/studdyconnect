@@ -14,6 +14,7 @@ class User private constructor(
 ) : AggregateRoot(id) {
 
     companion object {
+        
         fun newUser(email: String, discordId: String, discordUsername: String): User {
             val discordUser = DiscordUser(
                 id = discordId,
