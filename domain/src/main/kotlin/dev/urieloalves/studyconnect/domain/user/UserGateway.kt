@@ -4,7 +4,7 @@ import dev.urieloalves.domain.user.User
 import java.util.*
 
 interface UserGateway {
-    fun create(entity: User)
+    fun create(user: User)
     fun findById(id: UUID): User?
     fun findByDiscordId(id: String): User?
 }
