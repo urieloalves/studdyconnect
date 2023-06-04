@@ -1,7 +1,6 @@
 package dev.urieloalves.studyconnect.domain.user
 
 import dev.urieloalves.domain.shared.error.ValidationException
-import dev.urieloalves.domain.user.User
 import dev.urieloalves.studyconnect.domain.shared.validation.ValidationHandler
 import dev.urieloalves.studyconnect.domain.shared.validation.Validator
 

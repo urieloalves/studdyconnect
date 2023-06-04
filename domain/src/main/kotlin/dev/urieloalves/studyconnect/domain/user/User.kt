@@ -1,10 +1,8 @@
-package dev.urieloalves.domain.user
+package dev.urieloalves.studyconnect.domain.user
 
 
 import dev.urieloalves.studyconnect.domain.shared.AggregateRoot
 import dev.urieloalves.studyconnect.domain.shared.validation.ValidationHandler
-import dev.urieloalves.studyconnect.domain.user.DiscordUser
-import dev.urieloalves.studyconnect.domain.user.UserValidator
 import java.util.*
 
 class User private constructor(
@@ -14,7 +12,7 @@ class User private constructor(
 ) : AggregateRoot(id) {
 
     companion object {
-        
+
         fun newUser(email: String, discordId: String, discordUsername: String): User {
             val discordUser = DiscordUser(
                 id = discordId,
