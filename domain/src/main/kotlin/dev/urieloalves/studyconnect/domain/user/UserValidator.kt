@@ -1,16 +1,18 @@
-package dev.urieloalves.domain.user.entity
+package dev.urieloalves.studyconnect.domain.user
 
 import dev.urieloalves.domain.shared.error.ValidationException
-import dev.urieloalves.domain.user.valueobject.DiscordUser
-import java.util.UUID
+import dev.urieloalves.domain.user.User
+import dev.urieloalves.studyconnect.domain.shared.validation.ValidationHandler
+import dev.urieloalves.studyconnect.domain.shared.validation.Validator
 
-class User(val id: UUID, val email: String, val discordUser: DiscordUser) {
+class UserValidator(private val user: User, handler: ValidationHandler) : Validator(handler) {
 
-    init {
+    override fun validate() {
         validateEmail()
     }
 
     private fun validateEmail() {
+        val email = user.email
         if (email.trim().isEmpty()) {
             throw ValidationException("Email must not be empty")
         }
